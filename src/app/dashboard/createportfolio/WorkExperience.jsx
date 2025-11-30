@@ -1,8 +1,10 @@
 import React from 'react'
-
+import { EmptyWork } from "@/components/ui/EmptyWork";
 const WorkExperience = () => {
   return (
-    <div>WorkExperience</div>
+    <div className="p-6">
+      <EmptyWork />
+    </div>
   )
 }
 
