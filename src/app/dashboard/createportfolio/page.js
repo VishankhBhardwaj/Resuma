@@ -25,7 +25,7 @@ export default function Page() {
       case 6:
         return <ReviewPublish />;
       default:
-        return <ChooseTemplate />; // fallback
+        return <ChooseTemplate />;
     }
   };
 

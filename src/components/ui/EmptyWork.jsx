@@ -11,7 +11,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 
-export function EmptyWork() {
+export function EmptyWork({onAdd}) {
   return (
     <Empty className="py-14">
       <EmptyHeader>
@@ -29,7 +29,7 @@ export function EmptyWork() {
       </EmptyHeader>
 
       <EmptyContent>
-        <Button className="bg-[#0D1B2A] hover:bg-[#0D1B2Acc] text-white px-5 py-5 rounded-lg">
+        <Button onClick={onAdd} className="bg-[#0D1B2A] hover:bg-[#0D1B2Acc] text-white px-5 py-5 rounded-lg">
           <Plus size={16} className="mr-2" />
           Add Your First Experience
         </Button>

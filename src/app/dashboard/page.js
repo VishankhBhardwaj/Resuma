@@ -3,7 +3,7 @@ import Card from "@/components/ui/Card";
 import { FileText, Palette, Eye, TrendingUp } from 'lucide-react';
 export default function Page() {
   return (
-    <div className="parent min-h-screen w-screen flex flex-col p-3 gap-2">
+    <div className="parent w-full h-full flex flex-col p-3 gap-2">
       <div className="flex flex-col">
         <h1 className="font-bold text-black text-xl lg:text-5xl">Welcome To Your Dashboard</h1>
         <p className="text-gray-600 text-md lg:text-xl mt-2">Start building your perfect resume and portfolio</p>

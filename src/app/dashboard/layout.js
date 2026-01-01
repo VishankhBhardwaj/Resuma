@@ -12,7 +12,7 @@ export default function Layout({ children }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="flex-1 bg-background text-foreground overflow-x-hidden min-h-screen">
+      <main className="flex-1 bg-background text-foreground overflow-x-hidden min-h-screen overflow-y-hidden">
         <SidebarTrigger />
         {children}
       </main>
