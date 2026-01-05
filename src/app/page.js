@@ -6,7 +6,6 @@ import OrbitCarousel from "../components/ui/OrbitingSkills";
 import Button from "@/components/ui/FancyButton";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import TextView from "../components/ui/Text"
-import { auth } from "@clerk/nextjs/server";
 import { useRouter } from "next/navigation";
 export default async function Home() {
   const router = useRouter();
