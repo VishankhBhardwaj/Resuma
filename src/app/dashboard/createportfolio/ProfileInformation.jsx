@@ -1,16 +1,66 @@
-import React, { useState } from "react";
-import { Upload } from "lucide-react";
+import React, { use, useEffect, useState } from "react";
+import { Phone, Upload } from "lucide-react";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowUpIcon, X, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import 'animate.css';
+import { toast } from "sonner";
 
-const ProfileInformation = () => {
+
+const ProfileInformation = ({ onSubmit, data }) => {
   const [links, setLinks] = useState([
     { platform: "", url: "" }
   ]);
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState();
+  const [fullName, setFullName] = useState();
+  const [location, setLocation] = useState();
+  const [professionalTitle, setProfesstionaTitle] = useState();
+  const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
+  const [website, setWebsite] = useState();
+  const [bio, setBio] = useState();
 
+  useEffect(() => {
+    if (!data) return;
+    setFullName(data.fullName || "");
+    setProfesstionaTitle(data.professionalTitle || "");
+    setLocation(data.location || "");
+    setEmail(data.email || "");
+    setPhone(data.phone || "");
+    setWebsite(data.website || "");
+    setBio(data.bio || "");
+    setLinks(data.links || links)
+  }, [data])
+
+  const handleSubmit = () => {
+    if (!fullName || !professionalTitle || !location || !email || !phone || !website || !bio || !links) {
+      return;
+    }
+    const payload = {
+      fullName,
+      professionalTitle,
+      location,
+      email,
+      phone,
+      website,
+      bio,
+      links,
+    };
+
+    onSubmit(payload, true);
+    toast.success("Data saved Successfully")
+  };
+  const updateLink = (index, field, value) => {
+    setLinks(prev =>
+      prev.map((link, i) =>
+        i === index
+          ? { ...link, [field]: value }
+          : link
+      )
+    );
+  };
   const AddLink = () => {
     setLinks([...links, { platform: "", url: "" }])
   }
@@ -35,25 +85,22 @@ const ProfileInformation = () => {
 
           <div className="flex items-center gap-6">
 
-            <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
+            <div className="w-35 md:w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
               <img
-                src="/img.jpg"
+                src={preview || "/img.jpg"}
                 alt="profile"
                 className="w-full h-full object-cover"
               />
             </div>
 
             <div className="flex flex-col">
-              <label
-                htmlFor="upload"
-                className="cursor-pointer flex items-center gap-2 border border-gray-300 px-4 py-2 rounded-lg shadow-sm hover:bg-gray-50 transition"
-              >
-                <Upload size={18} />
-                <span className="font-medium text-sm">Upload Photo</span>
-              </label>
+              <Input type="file" accept="image/*" onChange={(e) => {
+                const selectedFile = e.target.files[0];
+                if (!selectedFile) return;
 
-              <input type="file" id="upload" className="hidden" />
-
+                setFile(selectedFile);
+                if (file) setPreview(URL.createObjectURL(selectedFile));
+              }} size={18} />
               <p className="text-gray-400 text-sm mt-2">
                 JPG, PNG or GIF. Max size 2MB.
               </p>
@@ -67,15 +114,24 @@ const ProfileInformation = () => {
           </h1>
           <div className="grid w-full items-center gap-3">
             <Label htmlFor="fullname">Full Name</Label>
-            <Input type="text" id="fullname" placeholder="John Doe" />
+            <Input
+              value={fullName || data.fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              type="text" id="fullname" placeholder="John Doe" />
           </div>
           <div className="grid w-full  items-center gap-3">
             <Label htmlFor="title">Professional Title</Label>
-            <Input type="text" id="title" placeholder="Full Stack Developer" />
+            <Input
+              value={professionalTitle || data.professionalTitle}
+              onChange={(e) => setProfesstionaTitle(e.target.value)}
+              type="text" id="title" placeholder="Full Stack Developer" />
           </div>
           <div className="grid w-full  items-center gap-3">
             <Label htmlFor="location">Location</Label>
-            <Input type="text" id="location" placeholder="New York,NY" />
+            <Input
+              value={location || data.location}
+              onChange={(e) => setLocation(e.target.value)}
+              type="text" id="location" placeholder="New York,NY" />
           </div>
         </div>
       </div>
@@ -85,27 +141,33 @@ const ProfileInformation = () => {
         </h1>
         <div className="flex flex-col gap-2 lg:flex-row lg:gap-2">
           <div className="grid w-full  items-center gap-3">
-          <Label htmlFor="email">Email Address</Label>
-          <Input
-            type="email"
-            id="email"
-            placeholder="johndoe@example.com"
-          />
-        </div>
+            <Label htmlFor="email">Email Address</Label>
+            <Input
+              value={email || data.email}
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              id="email"
+              placeholder="johndoe@example.com"
+            />
+          </div>
 
-        <div className="grid w-full  items-center gap-3">
-          <Label htmlFor="phone">Phone Number</Label>
-          <Input
-            type="tel"
-            id="phone"
-            placeholder="+1 123 456 7890"
-          />
-        </div>
+          <div className="grid w-full  items-center gap-3">
+            <Label htmlFor="phone">Phone Number</Label>
+            <Input
+              value={phone || data.phone}
+              onChange={(e) => setPhone(e.target.value)}
+              type="tel"
+              id="phone"
+              placeholder="+1 123 456 7890"
+            />
+          </div>
         </div>
 
         <div className="grid w-full  items-center gap-3">
           <Label htmlFor="website">Website</Label>
           <Input
+            value={website || data.website}
+            onChange={(e) => setWebsite(e.target.value)}
             type="url"
             id="website"
             placeholder="https://yourwebsite.com"
@@ -121,11 +183,13 @@ const ProfileInformation = () => {
           About You
         </p>
         <textarea
+          value={bio || data.bio}
+          onChange={(e) => setBio(e.target.value)}
           id="bio"
           maxLength={500}
           placeholder="Write a brief description about yourself, your experience, and what you're passionate about..."
           className="w-full h-32 p-4 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none
-    border-red-400 bg-red-50/20"   // remove red styling if no error
+    border-red-400 bg-red-50/20"
         />
         <p className="text-red-500 text-sm font-medium">
           Bio is required, at least 10 characters
@@ -141,14 +205,19 @@ const ProfileInformation = () => {
           <Button variant="outline" onClick={AddLink}><Plus /> Add Link</Button>
         </div>
         <div className=" w-full flex flex-col gap-2 animate__animated animate__fadeIn">
+
           {links.map((link, index) => (
             <div key={index} className="flex gap-3 items-center animate__animated animate__fadeIn">
               <input
+                value={link.platform}
+                onChange={(e) => updateLink(index, "platform", e.target.value)}
                 type="text"
                 placeholder="Platform"
                 className="border border-gray-200 rounded-lg p-2 w-[40%]"
               />
               <input
+                value={link.url}
+                onChange={(e) => updateLink(index, "url", e.target.value)}
                 type="url"
                 placeholder="URL"
                 className="border border-gray-200 rounded-lg p-2 w-[50%]"
@@ -159,6 +228,7 @@ const ProfileInformation = () => {
 
         </div>
       </div>
+      <Button onClick={handleSubmit} className='rounded-sm'>Save & Continue</Button>
     </div>
   );
 };

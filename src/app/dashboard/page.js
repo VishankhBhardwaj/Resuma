@@ -1,7 +1,24 @@
 "use client"
+
 import Card from "@/components/ui/Card";
 import { FileText, Palette, Eye, TrendingUp } from 'lucide-react';
+import { redirect } from "next/dist/server/api-utils";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation"
 export default function Page() {
+  const router = useRouter();
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await fetch('/api/user')
+      if (res.status === 401) {
+        router.push("/sign-in")
+        return
+      }
+    }
+
+    fetchUser()
+  }, [])
+
   return (
     <div className="parent w-full h-full flex flex-col p-3 gap-2">
       <div className="flex flex-col">

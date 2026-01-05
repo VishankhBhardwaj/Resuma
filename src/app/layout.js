@@ -1,14 +1,11 @@
 import {
   ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
 } from '@clerk/nextjs'
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from '@/components/ui/Navbar';
+import { Toaster } from "@/components/ui/sonner"
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -33,6 +30,7 @@ export default function RootLayout({ children }) {
       >
         <Navbar/>
         {children}
+        <Toaster />
       </body>
     </html>
     </ClerkProvider>

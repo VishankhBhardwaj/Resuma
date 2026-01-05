@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { EmptyWork } from "@/components/ui/EmptyWork";
 import WorkExperienceCard from './WorkExperienceCard';
 import { Plus } from 'lucide-react';
-const WorkExperience = () => {
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+const WorkExperience = ({ onSubmit, data }) => {
   const [work, setWork] = useState([]);
-
+  useEffect(() => {
+    if(!data) return;
+    setWork(data.work || []);
+  }, [data]);
   const handleClick = () => {
     setWork(prev => [
       ...prev,
@@ -21,6 +26,14 @@ const WorkExperience = () => {
       }
     ]);
   };
+  const handleSubmit = () => {
+    if (work.length === 0) return;
+    const payload = {
+      work:work
+    }
+    onSubmit(payload, true);
+    toast.success("Data Saved Successfully");
+  }
   return (
     <div className="p-6 b border border-gray-200 rounded-sm">
       <div className='flex flex-col items-center justify-center  h-[150px]'>
@@ -42,10 +55,10 @@ const WorkExperience = () => {
               key={item.id}
               index={index + 1}
               data={item}
-              onChange={(updated)=>
-                setWork(prev=>
-                  prev.map(w=>
-                    w.id==item.id?updated:w
+              onChange={(updated) =>
+                setWork(prev =>
+                  prev.map(w =>
+                    w.id == item.id ? updated : w
                   )
                 )
               }
@@ -57,8 +70,11 @@ const WorkExperience = () => {
             />
           ))
         }
+        
       </div>
-
+      <div>
+        <Button onClick={handleSubmit} className='w-full rounded-sm'>Save & Continue</Button>
+      </div>
     </div>
   )
 }

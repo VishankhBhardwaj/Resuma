@@ -1,12 +1,15 @@
+"use client";
 import 'animate.css';
 import { Sparkles } from "lucide-react";
 import GlowLine from "../components/ui/GlowLine";
 import OrbitCarousel from "../components/ui/OrbitingSkills";
 import Button from "../components/ui/Button";
-import { SignInButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import TextView from "../components/ui/Text"
+import { auth } from "@clerk/nextjs/server";
+import { useRouter } from "next/navigation";
 export default async function Home() {
-  // await new Promise(resolve => setTimeout(resolve, 3000));
+  const router = useRouter();
   return (
     <>
       <div className="parent flex flex-col ">
@@ -24,7 +27,7 @@ export default async function Home() {
               <br />
               Career Story
             </h1> */}
-            <TextView/>
+            <TextView />
           </div>
           <div className="flex items-center animate__animated animate__fadeInUp animate__delay-0.7s">
             <p className="text-xl text-center md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto">AI-powered resume analysis and portfolio generation that makes you stand out. Get hired faster with intelligent insights and stunning presentations.</p>
@@ -35,8 +38,34 @@ export default async function Home() {
             style={{ opacity: 1, transform: "none" }}
           >
             {/* Button 1 */}
-            <SignInButton mode="modal">
+            <SignedOut>
+              <SignInButton mode="modal" afterSignInUrl="/dashboard" afterSignUpUrl="/dashboard">
+                <button
+                  className="font-semibold rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-lg hover:shadow-cyan-500/50 hover:scale-105 px-8 py-4 text-lg animate-pulse-glow group"
+                  data-id="element-1"
+                >
+                  Analyze My Resume
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-zap inline-block ml-2 w-5 h-5 group-hover:rotate-12 transition-transform"
+                    aria-hidden="true"
+                  >
+                    <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path>
+                  </svg>
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
               <button
+                onClick={() => router.push('/dashboard')}
                 className="font-semibold rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-lg hover:shadow-cyan-500/50 hover:scale-105 px-8 py-4 text-lg animate-pulse-glow group"
                 data-id="element-1"
               >
@@ -57,8 +86,7 @@ export default async function Home() {
                   <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path>
                 </svg>
               </button>
-            </SignInButton>
-
+            </SignedIn>
             {/* Button 2 */}
             <div className="relative inline-flex items-center justify-center gap-4 group">
               <div

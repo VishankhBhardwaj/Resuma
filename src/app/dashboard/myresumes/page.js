@@ -3,34 +3,9 @@ import ResumeCard from "@/components/ui/ResumeCard"
 import { Search } from 'lucide-react';
 import { useState } from "react";
 
-const resumes = [
-  {
-    id: 1,
-    title: "Software Engineer Resume",
-    lastEdited: "2 days ago",
-  },
-  {
-    id: 2,
-    title: "Full Stack Developer Resume",
-    lastEdited: "5 hours ago",
-  },
-  {
-    id: 3,
-    title: "UI/UX Designer Resume",
-    lastEdited: "1 week ago",
-  },
-  {
-    id: 4,
-    title: "Data Scientist Resume",
-    lastEdited: "3 days ago",
-  },
-];
+
 export default function Page() {
-  const [query, setQuery] = useState("");
-  const filteredResumes = resumes.filter((resume) =>
-    resume.title.toLowerCase().includes(query.toLowerCase()) ||
-    resume.lastEdited.toLowerCase().includes(query.toLowerCase())
-  );
+  
   return (
     <div className="parent p-2 px-2 flex flex-col gap-2 md:gap-5">
       <div className="flex flex-col md:flex-row justify-between">

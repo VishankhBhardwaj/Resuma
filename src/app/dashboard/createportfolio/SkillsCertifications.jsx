@@ -1,26 +1,35 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import SkillCard from './SkillCard'
 import CertificationsSection from './CertificationSection';
-const SkillsCertifications = () => {
+import { toast } from 'sonner';
+import { id } from 'date-fns/locale';
+const SkillsCertifications = ({ onSubmit, data }) => {
   const options = ['Beginner', 'Intermediate', 'Proficient', 'Expert']
 
   const [activeTab, setActiveTab] = useState(1)
   const [skillName, setSkillName] = useState("")
-  const [proficiency, setProficiency] = useState(null)
+  const [proficiency, setProficiency] = useState(null);
+  const [certi, setCerti] = useState([]);
   const [skills, setSkills] = useState([])
-
+  
   const LEVEL_MAP = {
     Beginner: 1,
     Intermediate: 2,
     Proficient: 3,
     Expert: 4,
   }
-
+  useEffect(() => {
+    if (!data) return;
+    setSkills(Array.isArray(data.skills) ? data.skills : []);
+    setCerti(Array.isArray(data.certi) ? data.certi : []);
+  }, [data])
   const handleAddSkill = () => {
-    if (!skillName || !proficiency) return
-
+    if (!skillName || !proficiency) {
+      toast.error("Please Provide all fields");
+      return;
+    }
     setSkills(prev => [
       ...prev,
       {
@@ -37,6 +46,22 @@ const SkillsCertifications = () => {
 
   const removeSkill = (id) => {
     setSkills(prev => prev.filter(skill => skill.id !== id))
+  }
+  const handleCerti = (certifications) => {
+    if (!Array.isArray(certifications)) return;
+    setCerti(certifications);
+  };
+  const handleSubmit = () => {
+    if (skills.length == 0 || certi.length == 0) {
+      toast.error("Please Provide All Info");
+      return;
+    }
+    const payload = {
+      skills: skills,
+      certi: certi
+    }
+    onSubmit(payload, true);
+    toast.success("Data Entered Successfully");
   }
   return (
     <div className="min-h-screen p-3 flex flex-col border border-gray-200-200 rounded-md shadow-3xl gap-2">
@@ -112,7 +137,8 @@ const SkillsCertifications = () => {
           ))}
 
         </div>
-      </div>) : (<CertificationsSection/>)}
+      </div>) : (<CertificationsSection addCerti={handleCerti} certi={certi} />)}
+      <Button onClick={handleSubmit} className='rounded-sm'>Save & Continue</Button>
     </div>
   )
 }

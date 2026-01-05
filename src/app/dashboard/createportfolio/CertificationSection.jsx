@@ -1,40 +1,51 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import CertificationCard from "./CertificationCard";
 import DatePicker from "@/components/ui/DatePicker";
 
-const CertificationsSection = () => {
+const CertificationsSection = ({ addCerti, certi }) => {
     const [certName, setCertName] = useState("");
     const [org, setOrg] = useState("");
     const [date, setDate] = useState("");
     const [certifications, setCertifications] = useState([]);
 
+
+    useEffect(() => {
+        if (!certi) return;
+        setCertifications(Array.isArray(certi) ? certi : []);
+
+    }, [certi])
     const handleAddCertification = () => {
         if (!certName || !org || !date) return;
 
-        setCertifications((prev) => [
-            ...prev,
+        const updated = [
+            ...certifications,
             {
                 id: Date.now(),
                 name: certName,
                 organization: org,
                 date,
             },
-        ]);
-        
+        ];
+
+        setCertifications(updated);
+        addCerti(updated);
+
         setCertName("");
         setOrg("");
         setDate("");
     };
 
+
     const removeCertification = (id) => {
-        setCertifications((prev) =>
-            prev.filter((cert) => cert.id !== id)
-        );
+        const updated = certifications.filter(cert => cert.id !== id);
+        setCertifications(updated);
+        addCerti(updated);
     };
+
 
     return (
         <div className="flex flex-col gap-6">

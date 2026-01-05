@@ -1,4 +1,5 @@
 import { Crown } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const templates = [
   {
@@ -38,43 +39,19 @@ const templates = [
   },
   {
     id: 6,
-    title: "Golden Luxe",
-    desc: "Premium template with a luxurious golden tone.",
-    gradient: "from-yellow-400 via-amber-500 to-orange-600",
-    isPremium: true
-  },
-  {
-    id: 7,
-    title: "Cotton Candy",
-    desc: "Soft pastel palette perfect for creative portfolios.",
-    gradient: "from-pink-300 via-rose-300 to-purple-300",
-    isPremium: true
-  },
-  {
-    id: 8,
     title: "Neon Fusion",
     desc: "Energetic neon gradient ideal for modern designers.",
     gradient: "from-fuchsia-500 via-purple-600 to-indigo-600",
     isPremium: false
   },
-  {
-    id: 9,
-    title: "Forest Calm",
-    desc: "Earthy and natural tones for nature-inspired creators.",
-    gradient: "from-green-700 via-lime-600 to-green-500",
-    isPremium: false
-  },
-  {
-    id: 10,
-    title: "Steel Minimal",
-    desc: "A minimal, grayscale-inspired professional theme.",
-    gradient: "from-gray-400 via-gray-500 to-gray-700",
-    isPremium: false
-  },
 ];
 
 
-const ChooseTemplate = () => {
+const ChooseTemplate = ({onSubmit,data}) => {
+  const [active,setActive] = useState();
+  const handleClick = (card)=>{
+    onSubmit(card,true);
+  }
   return (
     <div className="min-h-screen p-3 flex flex-col border border-gray-200 rounded-md shadow-3xl">
       <h1 className="text-black text-center font-bold text-xl">
@@ -88,8 +65,9 @@ const ChooseTemplate = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2  gap-5 px-3">
         {templates.map((card) => (
           <div
+            onClick={()=>{setActive(card.id); handleClick(card)}}
             key={card.id}
-            className="rounded-2xl border border-gray-200 shadow-sm bg-white overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer md:h-[400px]  hover:border hover:border-black"
+            className={`rounded-2xl border border-gray-200 shadow-sm bg-white overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer md:h-[400px]  hover:border hover:border-black ${active==card.id || data.id == card.id?"border-2 border-pink-400":""}`}
           >
             {/* Top preview gradient */}
             <div

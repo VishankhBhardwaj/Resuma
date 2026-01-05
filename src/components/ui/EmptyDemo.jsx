@@ -13,7 +13,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 
-export function EmptyDemo() {
+export function EmptyDemo({onAdd}) {
   return (
     <Empty>
       <EmptyHeader>
@@ -30,7 +30,7 @@ export function EmptyDemo() {
 
       <EmptyContent>
         <div className="flex gap-2">
-          <Button>Create Project</Button>
+          <Button onClick={onAdd}>Create Project</Button>
           <Button variant="outline">Import Project</Button>
         </div>
       </EmptyContent>
