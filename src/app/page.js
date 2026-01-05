@@ -3,7 +3,7 @@ import 'animate.css';
 import { Sparkles } from "lucide-react";
 import GlowLine from "../components/ui/GlowLine";
 import OrbitCarousel from "../components/ui/OrbitingSkills";
-import Button from "../components/ui/Button";
+import Button from "@/components/ui/FancyButton";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import TextView from "../components/ui/Text"
 import { auth } from "@clerk/nextjs/server";
