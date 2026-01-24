@@ -14,7 +14,7 @@ import {
 
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
-  { title: "My Resumes", url: "/dashboard/myresumes", icon: Inbox },
+  { title: "Interview Prep", url: "/dashboard/interviewprep", icon: Inbox },
   { title: "Create Resume", url: "/dashboard/createresumes", icon: Calendar },
   { title: "My Portfolios", url: "/dashboard/myportfolios", icon: Search },
   { title: "Create Portfolio", url: "/dashboard/createportfolio", icon: Settings },
