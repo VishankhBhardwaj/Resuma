@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { UploadCloud, Plus, X, MoveRight, CircleCheckBig, Check } from "lucide-react";
+import { UploadCloud, Plus, X, MoveRight, CircleCheckBig, Check,CircleCheck,Mic,ChartNoAxesCombined } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -9,23 +9,25 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import axios from "axios";
 import pdfToText from 'react-pdftotext'
-import { Document, Page as PdfPage,pdfjs } from 'react-pdf';
 
-pdfjs.GlobalWorkerOptions.workerSrc =
-  `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 
 
 export default function Page() {
-  const [resumeUpload, setResumeUpload] = useState(true);
+  const [resumeUpload, setResumeUpload] = useState(false);
   const [technologies, setTechnologies] = useState([]);
   const [techInput, setTechInput] = useState("");
   const [jobTitle, setJobTitle] = useState("");
   const [jobDesc, setJobDesc] = useState("");
-  const [analysis, setAnalysis] = useState(true);
+  const [analysis, setAnalysis] = useState(false);
   const [text, setText] = useState('');
   const [file, setFile] = useState();
-  const [aiReply, setAiReply] = useState();
+  const [aiReply, setAiReply] = useState({
+    overallScore: null,
+    strengths: [],
+    missingKeywords: [],
+    atsCompatibility: "",
+  });
   const [numPages, setNumPages] = useState();
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -74,19 +76,19 @@ export default function Page() {
           <h1 className="text-2xl font-bold md:text-3xl">AI Resume Analyzer</h1>
           <p className="text-sm text-gray-600 font-semibold">Optimize your resume for specific job roles using AI</p>
         </div>
-        <div className="flex items-center justify-around w-full md:w-[30%] md:h-[80%] shadow-2xl gap-2 text-xs sm:text-sm font-medium text-gray-500 bg-white px-3 sm:px-4 py-2 rounded-lg  border border-gray-200 self-start lg:self-auto">
+        <div className="flex items-center justify-around w-full md:w-[30%] md:h-[80%] shadow-md gap-2 text-xs sm:text-sm font-medium text-gray-500 bg-white px-3 sm:px-4 py-2 rounded-lg   self-start lg:self-auto">
           <div className="flex rounded-full text-blue-500 text-md gap-2">
-            <div className="bg-blue-300 border rounded-full w-5 h-5 text-center">1</div>
+            <div className="bg-[#dbeafe] border rounded-full w-5 h-5 text-center">1</div>
             Upload
           </div>
           <div className=" flex w-8 sm:w-8 h-px bg-gray-300 text-lg"></div>
           <div className="flex rounded-full text-blue-500 text-md gap-2">
-            <div className="bg-blue-300 border rounded-full w-5 h-5 text-center">2</div>
+            <div className="bg-[#dbeafe] border rounded-full w-5 h-5 text-center">2</div>
             Target
           </div>
           <div className="flex w-8 sm:w-8 h-px bg-gray-300"></div>
           <div className="flex rounded-full text-blue-500 text-md gap-2">
-            <div className="bg-blue-300 border rounded-full w-5 h-5 text-center">3</div>
+            <div className="bg-[#dbeafe] border rounded-full w-5 h-5 text-center">3</div>
             Results
           </div>
         </div>
@@ -214,145 +216,143 @@ export default function Page() {
             className="bg-black text-white mt-auto cursor-pointer">Analyze & Optimize Resume<MoveRight /></Button>
         </div>
       </div> :
-        <div className="border border-red-400 flex flex-col h-full p-2 gap-4">
-          <div className="border border-gray-300 rounded-lg flex-1 p-4 space-y-4 shadow-xl">
+        <div className="flex flex-col h-full p-2 gap-4">
+          <div className="flex flex-col gap-3 md:flex-row">
+            <div className="border border-gray-300 rounded-lg flex-1 p-4 space-y-4 shadow-xl">
 
-            {/* Header */}
-            <div>
-              <h1 className="text-lg font-bold flex items-center gap-2">
-                <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                AI Analysis Report
-              </h1>
-              <p className="text-gray-400 text-sm">
-                Based on job description match
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full border-4 border-yellow-400 flex items-center justify-center text-lg font-semibold">
-                72%
+              {/* Header */}
+              <div>
+                <h1 className="text-lg font-bold flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+                  AI Analysis Report
+                </h1>
+                <p className="text-gray-400 text-sm">
+                  Based on job description match
+                </p>
               </div>
-            </div>
-            <div>
-              <h2 className="font-semibold flex items-center gap-2 text-green-600">
-                <CircleCheckBig /> Strengths
-              </h2>
-              <ul className="mt-2 space-y-1 text-sm">
-                {aiReply?.strengths?.map((item, index) => (
-                  <li key={index} className="flex items-center gap-2">
-                    <Check />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h2 className="font-semibold flex items-center gap-2 text-yellow-600">
-                ⚠️ Areas for Improvement
-              </h2>
-              <ul className="mt-2 space-y-1 text-sm">
-                {/* {aiReply?.weaknesses?.map((item, index) => (
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full border-4 border-yellow-400 flex items-center justify-center text-lg font-semibold">
+                  72%
+                </div>
+              </div>
+              <div>
+                <h2 className="font-semibold flex items-center gap-2 text-green-600">
+                  <CircleCheckBig /> Strengths
+                </h2>
+                <ul className="mt-2 space-y-1 text-sm">
+                  {aiReply?.strengths?.map((item, index) => (
+                    <li key={index} className="flex items-center gap-2">
+                      <CircleCheck className="text-[#bbebdb]"/>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h2 className="font-semibold flex items-center gap-2 text-yellow-600">
+                  ⚠️ Areas for Improvement
+                </h2>
+                <ul className="mt-2 space-y-1 text-sm">
+                  {/* {aiReply?.weaknesses?.map((item, index) => (
                 <li key={index} className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
                   {item}
                 </li>
               ))} */}
-              </ul>
-            </div>
-            <div>
-              <h2 className="font-semibold flex items-center gap-2 text-red-500">
-                🏷️ Missing Keywords
-              </h2>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {aiReply?.missingKeywords?.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 text-sm border border-red-300 text-red-500 rounded-full"
-                  >
-                    {tag}
-                  </span>
-                ))}
+                </ul>
               </div>
-            </div>
-
-          </div>
-          <div className="border border-gray-300 rounded-xl p-5 space-y-5 bg-white shadow-xl">
-            {/* Header */}
-            <div className="flex items-center gap-2 font-semibold text-lg">
-              <span className="text-yellow-500 text-xl">💡</span>
-              Career Insights
-            </div>
-
-            {/* Score Card */}
-            <div className="bg-blue-50 rounded-xl p-6 flex flex-col items-center gap-2">
-              <div className="w-20 h-20 rounded-full border-4 border-blue-500 flex items-center justify-center text-xl font-bold text-blue-600">
-                {aiReply.overallScore}%
-              </div>
-              <p className="font-semibold">Role Readiness</p>
-              <p className="text-sm text-gray-500 text-center">
-                {aiReply.atsCompatibility} match for Senior Frontend roles
-              </p>
-            </div>
-
-            {/* Progress Bars */}
-            <div className="space-y-4">
-              {/* Technical */}
               <div>
-                <div className="flex justify-between text-sm font-medium">
-                  <span>Technical Skills Match</span>
-                  <span>92%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full mt-1">
-                  <div className="h-2 bg-green-500 rounded-full w-[92%]"></div>
+                <h2 className="font-semibold flex items-center gap-2 text-red-500">
+                  🏷️ Missing Keywords
+                </h2>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {aiReply?.missingKeywords?.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 text-sm border border-red-300 text-red-500 rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
 
-              {/* Soft Skills */}
-              <div>
-                <div className="flex justify-between text-sm font-medium">
-                  <span>Soft Skills Match</span>
-                  <span>78%</span>
-                </div>
-                <div className="h-2 bg-gray-200 rounded-full mt-1">
-                  <div className="h-2 bg-blue-500 rounded-full w-[78%]"></div>
-                </div>
-              </div>
             </div>
+            <div className="border border-gray-300 rounded-xl p-5 space-y-5 bg-white shadow-xl">
+              {/* Header */}
+              <div className="flex items-center gap-2 font-semibold text-lg">
+                <span className="text-yellow-500 text-xl">💡</span>
+                Career Insights
+              </div>
 
-            <hr />
-
-            {/* Interview Prep Tips */}
-            <div className="space-y-3">
-              <h3 className="font-semibold">Interview Prep Tips</h3>
-
-              <div className="flex gap-3 items-start text-sm text-gray-600">
-                <span className="bg-purple-100 text-purple-600 p-2 rounded-lg">🎤</span>
-                <p>
-                  Prepare to discuss your experience with large-scale React applications
-                  and state management.
+              {/* Score Card */}
+              <div className="bg-blue-50 rounded-xl p-6 flex flex-col items-center gap-2">
+                <div className="w-20 h-20 rounded-full border-4 border-blue-500 flex items-center justify-center text-xl font-bold text-blue-600">
+                  {aiReply.overallScore}%
+                </div>
+                <p className="font-semibold">Role Readiness</p>
+                <p className="text-sm text-gray-500 text-center">
+                  {aiReply.atsCompatibility} match for Senior Frontend roles
                 </p>
               </div>
 
-              <div className="flex gap-3 items-start text-sm text-gray-600">
-                <span className="bg-purple-100 text-purple-600 p-2 rounded-lg">📈</span>
-                <p>
-                  Highlight your leadership in the recent e-commerce project mentioned in
-                  your resume.
-                </p>
-              </div>
-            </div>
+              {/* Progress Bars */}
+              <div className="space-y-4">
+                {/* Technical */}
+                <div>
+                  <div className="flex justify-between text-sm font-medium">
+                    <span>Technical Skills Match</span>
+                    <span>92%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full mt-1">
+                    <div className="h-2 bg-[#10b981] rounded-full w-[92%]"></div>
+                  </div>
+                </div>
 
+                {/* Soft Skills */}
+                <div>
+                  <div className="flex justify-between text-sm font-medium">
+                    <span>Soft Skills Match</span>
+                    <span>78%</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full mt-1">
+                    <div className="h-2 bg-[#3b82f6] rounded-full w-[78%]"></div>
+                  </div>
+                </div>
+              </div>
+
+              <hr />
+
+              {/* Interview Prep Tips */}
+              <div className="space-y-3">
+                <h3 className="font-semibold">Interview Prep Tips</h3>
+
+                <div className="flex gap-3 items-start text-sm text-gray-600">
+                  <span className="bg-purple-100 text-purple-600 p-2 rounded-lg"><Mic/></span>
+                  <p>
+                    Prepare to discuss your experience with large-scale React applications
+                    and state management.
+                  </p>
+                </div>
+
+                <div className="flex gap-3 items-start text-sm text-gray-600">
+                  <span className="bg-purple-100 text-purple-600 p-2 rounded-lg"><ChartNoAxesCombined /></span>
+                  <p>
+                    Highlight your leadership in the recent e-commerce project mentioned in
+                    your resume.
+                  </p>
+                </div>
+              </div>
+
+            </div>
           </div>
           {file && (
-            <div>
-              <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
-                <PdfPage pageNumber={pageNumber} />
-              </Document>
-              <p>
-                Page {pageNumber} of {numPages}
-              </p>
-            </div>
+            <iframe
+              src={URL.createObjectURL(file)}
+              className="w-full h-[600px] rounded-lg border"
+              title="Resume Preview"
+            />
           )}
-
         </div>
 
       }
