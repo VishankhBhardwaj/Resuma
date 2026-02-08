@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { UploadCloud, Plus, X, MoveRight, CircleCheckBig, Check,CircleCheck,Mic,ChartNoAxesCombined } from "lucide-react";
+import { UploadCloud, Plus, X, MoveRight, CircleCheckBig, Check,CircleCheck,Mic,ChartNoAxesCombined,Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -71,6 +71,10 @@ export default function Page() {
   }
   return (
     <div className="flex flex-col gap-2 p-2 h-full">
+      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-purple-200 backdrop-blur-sm mb-4 md:w-[15%] w-[50%]">
+          <Zap className="h-4 w-4 text-purple-500" />
+          <h3 className="text-sm font-medium text-purple-700">Analyze Portfolio</h3>
+      </div>
       <div className="flex flex-col md:flex-row md:justify-between">
         <div className="flex flex-col">
           <h1 className="text-2xl font-bold md:text-3xl">AI Resume Analyzer</h1>
@@ -141,7 +145,7 @@ export default function Page() {
                 ) : (
                   <textarea
                     placeholder="Paste your resume text here..."
-                    className="min-h-[220px] w-full resize-none rounded-lg border border-gray-300 p-4 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    className="min-h-45 w-full resize-none rounded-lg border border-gray-300 p-4 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                 )}
               </div>

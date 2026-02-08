@@ -1,6 +1,6 @@
 "use client"
 import StepProgress from "@/components/ui/StepProgress";
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight,Zap } from 'lucide-react';
 import { useEffect, useState } from "react";
 import ChooseTemplate from "./ChooseTemplate";
 import ProfileInformation from "./ProfileInformation";
@@ -96,6 +96,10 @@ export default function Page() {
   }
   return (
     <div className="h-full w-full  p-2 flex flex-col gap-2">
+      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-purple-200 backdrop-blur-sm mb-4 md:w-[15%] w-[50%]">
+          <Zap className="h-4 w-4 text-purple-500" />
+          <h3 className="text-sm font-medium text-purple-700">Create Portfolio</h3>
+      </div>
       <StepProgress step={currStep} />
       <div className="flex flex-row justify-between">
         <button onClick={() => setCurrStep(currStep - 1)} disabled={currStep === 1} className={`border border-gray-200 rounded-sm shadow-sm flex flex-row p-2 hover:shadow-lg transition-all duration-200 ${currStep === 1 ? "cursor-not-allowed" : "cursor-pointer"}`}>
