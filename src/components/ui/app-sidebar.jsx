@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Calendar, Home, Inbox, Search, Settings,FileScan,BriefcaseBusiness } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import {
@@ -10,15 +10,16 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  
 } from "@/components/ui/sidebar";
 
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "Interview Prep", url: "/dashboard/interviewprep", icon: Inbox },
-  { title: "Create Resume", url: "/dashboard/createresumes", icon: Calendar },
+  { title: "Analyze Resume", url: "/dashboard/analyzeresumes", icon: FileScan },
   { title: "My Portfolios", url: "/dashboard/myportfolios", icon: Search },
   { title: "Create Portfolio", url: "/dashboard/createportfolio", icon: Settings },
-  { title: "Settings", url: "/dashboard/settings", icon: Settings },
+  { title: "Settings", url: "/dashboard/settings", icon: BriefcaseBusiness },
 ];
 
 export function AppSidebar() {
