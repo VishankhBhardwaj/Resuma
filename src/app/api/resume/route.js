@@ -3,21 +3,6 @@ import { generatePortfolio } from "@/lib/gemini";
 import { auth } from "@clerk/nextjs/server";
 
 
-
-function extractJSON(text) {
-    try {
-        const cleaned = text
-            .replace(/```json/g, "")
-            .replace(/```/g, "")
-            .trim();
-
-        return JSON.parse(cleaned);
-    } catch (err) {
-        console.error("JSON parse failed:", text);
-        throw new Error("Invalid JSON from AI");
-    }
-}
-
 export async function POST(req) {
     try {
         const { userId } = await auth();
@@ -111,7 +96,7 @@ Return JSON in the following EXACT structure:
 `;
 
         const aiReply = await generatePortfolio(prompt);
-        const parsed = extractJSON(aiReply);
+        const parsed = (aiReply);
         return NextResponse.json(
             { result: parsed },
             { status: 200 }

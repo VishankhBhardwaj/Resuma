@@ -2,10 +2,13 @@
 
 import { Input } from "@/components/ui/input";
 import { LogOut, RotateCcw, BotMessageSquare, User, SendHorizontal } from "lucide-react";
-import { useEffect, useState } from "react";
-
+import { use, useEffect, useState } from "react";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
+import axios from "axios";
 export default function Page() {
     const [messages, setMessages] = useState([]);
+    const [file, setFile] = useState();
+    const [query, setQuery] = useState("");
     useEffect(() => {
         setMessages([
             {
@@ -16,6 +19,16 @@ export default function Page() {
         ]);
     }, []);
 
+    const handleClick = async () => {
+        setMessages((prev) => [
+            ...prev, { role: "user", content: query }
+        ])
+        const formData = new FormData()
+        formData.append("file", file)
+        formData.append("query", query)
+        const response = await axios.post("http://127.0.0.1:8000/ai_agent",formData)
+        console.log(response)
+    }
     return (
         <div className="flex flex-col gap-2 h-full overflow-hidden">
             <div className="border-b border-gray-300 h-[7%] p-3 flex justify-between items-center shadow-sm">
@@ -47,8 +60,18 @@ export default function Page() {
                 ))}
             </div>
             <div className="border-t border-gray-300 p-3 h-[14%] md:h-[16%] flex flex-row gap-2">
-                <Input placeholder="Type your answer here…" />
-                <SendHorizontal className="relative mt-2" />
+                {!file ? (<Field>
+                    <FieldLabel htmlFor="resume">Resume</FieldLabel>
+                    <Input id="resume" type="file" onChange={(e) => {
+                        const currFile = e.target.files?.[0]
+                        setFile(currFile)
+                    }} className="cursor-pointer" />
+                    <FieldDescription>Select a Resume to upload.</FieldDescription>
+                </Field>) : (<div className="w-full flex flex-row gap-2">
+                    <Input placeholder="Type your answer here…" onChange={(e) => setQuery(e.target.value)} />
+                    <SendHorizontal className="relative mt-2" onClick={handleClick} />
+                </div>)}
+
             </div>
         </div>
     );
