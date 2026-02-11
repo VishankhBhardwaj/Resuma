@@ -1,6 +1,6 @@
-import { Calendar, Home, Inbox, Search, Settings,FileScan,BriefcaseBusiness } from "lucide-react";
+import { Calendar, Home, Inbox, Search, Settings, FileScan, BriefcaseBusiness, Layers } from "lucide-react";
 import { usePathname } from "next/navigation";
-
+import { useRouter } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -10,8 +10,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  
+  SidebarFooter
 } from "@/components/ui/sidebar";
+import { Dropbox } from "@/components/ui/Dropbox"
 
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
@@ -24,12 +25,18 @@ const items = [
 
 export function AppSidebar() {
   const pathname = usePathname();
-
+  const router = useRouter();
+  const handleClick = () => {
+    router.push("/")
+  }
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-2xl text-black font-bold mb-4 cursor-pointer" onClick={handleClick}>
+            <div className="w-7 h-7 mr-4">
+              <Layers className="w-full h-full" />
+            </div>Application</SidebarGroupLabel>
 
           <SidebarGroupContent>
             <SidebarMenu>
@@ -47,14 +54,12 @@ export function AppSidebar() {
                         `}
                       >
                         <item.icon
-                          className={`h-7 w-5 ${
-                            isActive ? "text-[#1c398e]" : "text-gray-600"
-                          }`}
+                          className={`h-7 w-5 ${isActive ? "text-[#1c398e]" : "text-gray-600"
+                            }`}
                         />
                         <span
-                          className={`text-base ${
-                            isActive ? "font-semibold text-[#1c398e]" : ""
-                          }`}
+                          className={`text-base ${isActive ? "font-semibold text-[#1c398e]" : ""
+                            }`}
                         >
                           {item.title}
                         </span>
@@ -67,6 +72,12 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <div className="flex flex-row  w-full justify-around border-t border-gray-300 p-2">
+          <img data-slot="avatar-image" className="aspect-square size-full rounded-full w-10 h-10" src="https://github.com/shadcn.png"></img>
+          <Dropbox />
+        </div>
+      </SidebarFooter>
     </Sidebar>
   );
 }
