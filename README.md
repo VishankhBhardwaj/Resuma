@@ -10,7 +10,7 @@
 
 Resuma is a cutting-edge dual-stack web application that leverages advanced AI to analyze resumes, generate stunning portfolios, and provide personalized career insights. Built with Next.js frontend and FastAPI backend, powered by LangChain RAG system and Google Gemini AI, Resuma helps professionals stand out in today's competitive job market.
 
-![Resuma Banner](./public/img.jpg)
+![Resuma Banner](./public/img1.jpg.png)
 
 ## ✨ Features
 
