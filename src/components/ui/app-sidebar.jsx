@@ -1,6 +1,16 @@
-import { Calendar, Home, Inbox, Search, Settings, FileScan, BriefcaseBusiness, Layers } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
+"use client";
+
+import {
+  Home,
+  FileScan,
+  BriefcaseBusiness,
+  Layers,
+  Settings,
+  PlusCircle,
+  FolderKanban,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
@@ -10,60 +20,75 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarFooter
+  SidebarFooter,
 } from "@/components/ui/sidebar";
-import { Dropbox } from "@/components/ui/Dropbox"
+import { Dropbox } from "@/components/ui/Dropbox";
 
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
-  { title: "Interview Prep", url: "/dashboard/interviewprep", icon: Inbox },
+  { title: "Interview Prep", url: "/dashboard/interviewprep", icon: BriefcaseBusiness },
   { title: "Analyze Resume", url: "/dashboard/analyzeresumes", icon: FileScan },
-  { title: "My Portfolios", url: "/dashboard/myportfolios", icon: Search },
-  { title: "Create Portfolio", url: "/dashboard/createportfolio", icon: Settings },
-  { title: "Settings", url: "/dashboard/settings", icon: BriefcaseBusiness },
+  { title: "My Portfolios", url: "/dashboard/myportfolios", icon: FolderKanban },
+  { title: "Create Portfolio", url: "/dashboard/createportfolio", icon: PlusCircle },
+  { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ];
 
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const handleClick = () => {
-    router.push("/")
-  }
+
   return (
-    <Sidebar>
-      <SidebarContent>
+    <Sidebar className="border-r border-slate-200/80 text-slate-900 [&_[data-sidebar=sidebar]]:border-r [&_[data-sidebar=sidebar]]:border-slate-200/80 [&_[data-sidebar=sidebar]]:bg-white/90 [&_[data-sidebar=sidebar]]:backdrop-blur-xl">
+      <SidebarContent className="bg-transparent">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-2xl text-black font-bold mb-4 cursor-pointer" onClick={handleClick}>
-            <div className="w-7 h-7 mr-4">
-              <Layers className="w-full h-full" />
-            </div>Application</SidebarGroupLabel>
+          <SidebarGroupLabel
+            className="mb-4 cursor-pointer gap-3 text-lg font-bold text-slate-900 transition-colors hover:text-cyan-600"
+            style={{ fontFamily: "Orbitron, sans-serif" }}
+            onClick={() => router.push("/")}
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 via-purple-500 to-pink-500 p-0.5">
+              <div className="flex h-full w-full items-center justify-center rounded-[6px] bg-white">
+                <Layers className="h-4 w-4 text-cyan-600" />
+              </div>
+            </div>
+            Resuma
+          </SidebarGroupLabel>
 
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="gap-1">
               {items.map((item) => {
-                const isActive = pathname === item.url;
+                const isActive =
+                  item.url === "/dashboard"
+                    ? pathname === "/dashboard"
+                    : pathname === item.url || pathname.startsWith(`${item.url}/`);
 
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <a
+                      <Link
                         href={item.url}
                         className={`
-                          flex items-center gap-4 p-3 rounded-md transition h-[60px]
-                          ${isActive ? "bg-[#eff6ff] border border-blue-200 text-[#1c398e]" : "text-gray-700"}
+                          flex h-[52px] items-center gap-3 rounded-xl px-3 transition-all duration-300
+                          ${
+                            isActive
+                              ? "border border-cyan-200 bg-gradient-to-r from-cyan-50 via-purple-50 to-transparent text-cyan-800 shadow-sm"
+                              : "border border-transparent text-slate-500 hover:border-slate-200 hover:bg-slate-50 hover:text-slate-900"
+                          }
                         `}
                       >
                         <item.icon
-                          className={`h-7 w-5 ${isActive ? "text-[#1c398e]" : "text-gray-600"
-                            }`}
+                          className={`h-5 w-5 shrink-0 ${
+                            isActive ? "text-cyan-600" : "text-slate-400"
+                          }`}
                         />
                         <span
-                          className={`text-base ${isActive ? "font-semibold text-[#1c398e]" : ""
-                            }`}
+                          className={`text-sm ${
+                            isActive ? "font-semibold text-cyan-800" : ""
+                          }`}
                         >
                           {item.title}
                         </span>
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );
@@ -72,9 +97,15 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <div className="flex flex-row  w-full justify-around border-t border-gray-300 p-2">
-          <img data-slot="avatar-image" className="aspect-square size-full rounded-full w-10 h-10" src="https://github.com/shadcn.png"></img>
+
+      <SidebarFooter className="border-t border-slate-200/80 bg-transparent">
+        <div className="flex w-full items-center justify-around gap-2 p-2">
+          <img
+            alt="User avatar"
+            data-slot="avatar-image"
+            className="aspect-square size-10 rounded-full ring-2 ring-cyan-200"
+            src="https://github.com/shadcn.png"
+          />
           <Dropbox />
         </div>
       </SidebarFooter>

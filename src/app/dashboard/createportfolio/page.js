@@ -66,7 +66,7 @@ export default function Page() {
         router.push(`/p/${portfolioId}/portfolio`)
       }
     } catch (err) {
-      toast.error("AI generation failed");
+      toast.error("AI generation failed due to High demand please try again later");
     }finally{
       setAi(false);
     }

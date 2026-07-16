@@ -1,11 +1,9 @@
-import {
-  ClerkProvider,
-} from '@clerk/nextjs'
+import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from '@/components/ui/Navbar';
-import { Toaster } from "@/components/ui/sonner"
-
+import Navbar from "@/components/ui/Navbar";
+import { Toaster } from "@/components/ui/sonner";
+import LenisProvider from "@/components/LenisProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,15 +22,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-    <html lang="en" className="dark">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navbar/>
-        {children}
-        <Toaster />
-      </body>
-    </html>
+      <html lang="en" className="dark">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Navbar />
+          <LenisProvider>{children}</LenisProvider>
+          <Toaster />
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

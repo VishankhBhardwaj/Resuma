@@ -7,7 +7,7 @@ import Button from "@/components/ui/FancyButton";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import TextView from "../components/ui/Text"
 import { useRouter } from "next/navigation";
-export default async function Home() {
+export default  function Home() {
   const router = useRouter();
   return (
     <>

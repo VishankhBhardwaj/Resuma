@@ -89,50 +89,121 @@ export default function Page() {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
     return (
-        <div className="flex flex-col gap-2 h-screen overflow-hidden ">
-            <div className="border-b border-gray-300 h-[7%] p-3 flex justify-between items-center shadow-sm">
+        <div className="flex h-[calc(100dvh-3.5rem)] flex-col overflow-hidden">
+            <div className="flex shrink-0 items-center justify-between border-b border-gray-300 p-3 shadow-sm">
                 <h1 className="font-semibold md:text-2xl">Interview Prep</h1>
-                <div className="flex gap-6 flex-row  md:w-[15%] justify-around">
+                <div className="flex flex-row gap-6 justify-around md:w-[15%]">
                     <button onClick={handleReset}>
                         <div className="flex flex-row gap-2">
-                            <RotateCcw className="text-gray-400 h-5 w-5 cursor-pointer" />
-                            <h1 className="text-gray-400 h-5 w-5 cursor-pointer hidden md:block">Restart</h1>
+                            <RotateCcw className="h-5 w-5 cursor-pointer text-gray-400" />
+                            <h1 className="hidden h-5 w-5 cursor-pointer text-gray-400 md:block">Reset</h1>
                         </div>
                     </button>
                     <button onClick={handleEnd}>
                         <div className="flex flex-row gap-2">
-                            <LogOut className="text-gray-400 h-5 w-5 cursor-pointer" />
-                            <h1 className="text-gray-400 h-5 w-5 cursor-pointer hidden md:block">End</h1>
+                            <LogOut className="h-5 w-5 cursor-pointer text-gray-400" />
+                            <h1 className="hidden h-5 w-5 cursor-pointer text-gray-400 md:block">End</h1>
                         </div>
                     </button>
                 </div>
             </div>
-            <div className="flex-1 p-4 space-y-3 overflow-y-auto bg-[#f6f7f9]">
-                {messages.map((msg, i) => (
-                    <div
-                        key={i}
-                        className={`max-w-[70%] md:max-w-[50%] p-3 rounded-lg text-sm mb-2 font-semibold  shadow-lg animate__animated animate__fadeIn
-              ${msg.role === "assistant"
-                                ? "bg-[#DBEAFE] text-gray-900 self-start border border-gray-200"
-                                : "bg-[#334155] text-white self-end ml-auto rounded-tr-none"}
-            `}
-                    >
-                        {msg.role === "assistant" ? <BotMessageSquare /> : <User />}
-                        {msg.content.split("\n").map((line, index) => (
-                            <span key={index}>
-                                {line}
-                                <br />
-                            </span>
-                        ))}
-                    </div>
-                ))}
+            <div className="min-h-0 flex-1 space-y-4 overflow-y-auto bg-[#f8fafc] p-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                {messages.map((msg, i) =>
+                    msg.role === "assistant" ? (
+                        <div
+                            key={i}
+                            className="group relative max-w-[85%] md:max-w-[65%] animate__animated animate__fadeIn"
+                        >
+                            <div
+                                aria-hidden
+                                className="absolute -inset-px rounded-2xl bg-gradient-to-br from-cyan-400/40 via-purple-400/30 to-pink-400/40 opacity-70 blur-[1px] transition-opacity duration-300 group-hover:opacity-100"
+                            />
+                            <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 p-4 shadow-sm backdrop-blur-md md:p-5">
+                                <div
+                                    aria-hidden
+                                    className="absolute -right-10 -top-10 h-28 w-28 rounded-full bg-gradient-to-br from-cyan-400/20 via-purple-400/15 to-pink-400/20 blur-2xl"
+                                />
+                                <div className="relative flex gap-3">
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 via-purple-500 to-pink-500 p-0.5 shadow-sm">
+                                        <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-white">
+                                            <BotMessageSquare className="h-5 w-5 text-cyan-600" />
+                                        </div>
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <div className="mb-2 flex items-center gap-2">
+                                            <span
+                                                className="text-sm font-semibold text-slate-800"
+                                                style={{ fontFamily: "Orbitron, sans-serif" }}
+                                            >
+                                                AI Interviewer
+                                            </span>
+                                            <span className="rounded-full border border-cyan-200 bg-cyan-50 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-cyan-700">
+                                                Coach
+                                            </span>
+                                        </div>
+                                        <div className="text-sm font-normal leading-relaxed text-slate-600">
+                                            {msg.content.split("\n").map((line, index, lines) => (
+                                                <span key={index}>
+                                                    {line}
+                                                    {index < lines.length - 1 && <br />}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div
+                            key={i}
+                            className="group relative ml-auto max-w-[85%] md:max-w-[65%] animate__animated animate__fadeIn"
+                        >
+                            <div
+                                aria-hidden
+                                className="absolute -inset-px rounded-2xl bg-gradient-to-br from-slate-400/35 via-indigo-400/30 to-cyan-400/35 opacity-70 blur-[1px] transition-opacity duration-300 group-hover:opacity-100"
+                            />
+                            <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-slate-50 via-white to-indigo-50/60 p-4 shadow-sm backdrop-blur-md md:p-5">
+                                <div
+                                    aria-hidden
+                                    className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-gradient-to-br from-indigo-400/15 via-slate-400/10 to-cyan-400/15 blur-2xl"
+                                />
+                                <div className="relative flex gap-3">
+                                    <div className="min-w-0 flex-1 text-right">
+                                        <div className="mb-2 flex items-center justify-end gap-2">
+                                            <span className="rounded-full border border-indigo-200 bg-indigo-50 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-indigo-700">
+                                                You
+                                            </span>
+                                            <span
+                                                className="text-sm font-semibold text-slate-800"
+                                                style={{ fontFamily: "Orbitron, sans-serif" }}
+                                            >
+                                                Candidate
+                                            </span>
+                                        </div>
+                                        <div className="text-left text-sm font-normal leading-relaxed text-slate-700">
+                                            {msg.content.split("\n").map((line, index, lines) => (
+                                                <span key={index}>
+                                                    {line}
+                                                    {index < lines.length - 1 && <br />}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-slate-600 via-indigo-500 to-cyan-500 p-0.5 shadow-sm">
+                                        <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-white">
+                                            <User className="h-5 w-5 text-indigo-600" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                )}
                 <div ref={bottomRef}></div>
             </div>
-            <div className={`border-t border-gray-300 p-3 flex flex-row gap-2 mt-auto ${!file ? "h-[18%] md:h-[16%]" : "h-[8%] md:h-[8%]"
-                }`}
-            >
+            <div className="flex shrink-0 flex-row gap-2 border-t border-gray-300 p-3">
                 {!fileUploaded ? (
-                    <div className="w-full flex flex-row gap-2">
+                    <div className="flex w-full flex-row gap-2">
                         <Field>
                             <FieldLabel htmlFor="resume">Resume</FieldLabel>
                             <Input id="resume" type="file" onChange={(e) => {
@@ -143,29 +214,32 @@ export default function Page() {
                         </Field>
                         <button
                             onClick={() => { handleFileUpload(); }}
-                            className="p-2 hover:bg-gray-200 rounded relative"
+                            className="relative rounded p-2 hover:bg-gray-200"
                         >
                             <SendHorizontal />
                         </button>
                     </div>
-                ) : (<div className="w-full flex flex-row gap-2 ">
-                    <Input placeholder="Type your answer here…"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                handleClick();
-                                setQuery("");
-                            }
-                        }} />
-                    <button
-                        onClick={() => { handleClick(); setQuery(""); }}
-                        className="p-2 hover:bg-gray-200 rounded relative"
-                    >
-                        <SendHorizontal />
-                    </button>
-                </div>)}
-
+                ) : (
+                    <div className="flex w-full flex-row gap-2">
+                        <Input
+                            placeholder="Type your answer here…"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    handleClick();
+                                    setQuery("");
+                                }
+                            }}
+                        />
+                        <button
+                            onClick={() => { handleClick(); setQuery(""); }}
+                            className="relative rounded p-2 hover:bg-gray-200"
+                        >
+                            <SendHorizontal />
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -1,21 +1,74 @@
-import React from 'react'
+import Link from "next/link";
+import { FileScan, BriefcaseBusiness, Plus, Palette } from "lucide-react";
+
+const actions = [
+  {
+    title: "Analyze Resume",
+    description: "Analyze a professional resume with AI assistance.",
+    href: "/dashboard/analyzeresumes",
+    icon: FileScan,
+    accent: "from-cyan-500 to-blue-500",
+    hoverGlow: "hover:border-cyan-300 hover:shadow-[0_8px_30px_rgba(6,182,212,0.18)]",
+  },
+  {
+    title: "Interview Prep",
+    description: "Practice answers and sharpen your interview skills.",
+    href: "/dashboard/interviewprep",
+    icon: BriefcaseBusiness,
+    accent: "from-purple-500 to-violet-600",
+    hoverGlow: "hover:border-purple-300 hover:shadow-[0_8px_30px_rgba(168,85,247,0.18)]",
+  },
+  {
+    title: "Create Portfolio",
+    description: "Showcase your work with an amazing portfolio.",
+    href: "/dashboard/createportfolio",
+    icon: Plus,
+    accent: "from-cyan-400 to-teal-500",
+    hoverGlow: "hover:border-teal-300 hover:shadow-[0_8px_30px_rgba(45,212,191,0.18)]",
+  },
+  {
+    title: "My Portfolios",
+    description: "View and manage your portfolios.",
+    href: "/dashboard/myportfolios",
+    icon: Palette,
+    accent: "from-pink-500 to-rose-500",
+    hoverGlow: "hover:border-pink-300 hover:shadow-[0_8px_30px_rgba(244,114,182,0.18)]",
+  },
+];
 
 const Card = () => {
-    return (
-        <>
-            <div className='flex flex-col lg:flex-row  w-full overflow-hidden lg:flex-wrap'>
-                <div class=" grid md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1">
-                    <a href="/dashboard/createresumes"><div data-slot="card" class="text-card-foreground flex flex-col gap-6 rounded-xl py-6 shadow-sm h-full cursor-pointer hover:shadow-lg  border  bg-white border-blue-400 md:border-slate-200 hover:border-blue-400 transition-all duration-400"><div class="p-6 "><div class="flex items-center gap-4 mb-4"><div class="w-12 h-12 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus text-white"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div><h3 class="text-xl font-bold text-slate-900">Create Resume</h3></div><p class="text-slate-600">Build a professional resume with AI assistance</p></div></div></a>
-
-                    <a href="/dashboard/myresumes"><div data-slot="card" class="hover:border-purple-400 border-purple-400 transition-all duration-400 text-card-foreground flex flex-col gap-6 rounded-xl py-6 shadow-sm h-full cursor-pointer hover:shadow-lg  border md:border-slate-200 bg-white"><div class="p-6"><div class="flex items-center gap-4 mb-4"><div class="w-12 h-12 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text text-white"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M10 9H8"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg></div><h3 class="text-xl font-bold text-slate-900">My Resumes</h3></div><p class="text-slate-600">View and manage all your resumes</p></div></div></a>
-
-                    <a href="/dashboard/createportfolio"><div data-slot="card" class="text-card-foreground flex flex-col gap-6 rounded-xl py-6 shadow-sm h-full cursor-pointer hover:shadow-lg hover:border-cyan-400 transition-all duration-400 border border-cyan-400 md:border-slate-200 bg-white"><div class="p-6"><div class="flex items-center gap-4 mb-4"><div class="w-12 h-12 rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus text-white"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></div><h3 class="text-xl font-bold text-slate-900">Create Portfolio</h3></div><p class="text-slate-600">Showcase your work with an amazing portfolio</p></div></div></a>
-
-                    <a href="/dashboard/myportfolios"><div data-slot="card" class="text-card-foreground flex flex-col gap-6 rounded-xl py-6 shadow-sm h-full cursor-pointer hover:shadow-lg hover:border-pink-400 transition-all duration-400 border border-pink-400 md:border-slate-200 bg-white"><div class="p-6"><div class="flex items-center gap-4 mb-4"><div class="w-12 h-12 rounded-lg bg-gradient-to-r from-pink-500 to-pink-600 flex items-center justify-center"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-palette text-white"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg></div><h3 class="text-xl font-bold text-slate-900">My Portfolios</h3></div><p class="text-slate-600">View and manage your portfolios</p></div></div></a>
+  return (
+    <div className="grid flex-1 grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+      {actions.map(({ title, description, href, icon: Icon, accent, hoverGlow }) => (
+        <Link key={title} href={href} className="group block h-full">
+          <div
+            className={`relative h-full overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 p-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] ${hoverGlow}`}
+          >
+            <div
+              aria-hidden
+              className={`absolute -right-8 -top-8 h-28 w-28 rounded-full bg-gradient-to-br ${accent} opacity-15 blur-2xl transition-opacity duration-300 group-hover:opacity-30`}
+            />
+            <div className="relative">
+              <div
+                className={`mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${accent} p-0.5 transition-transform duration-300 group-hover:scale-110`}
+              >
+                <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-white">
+                  <Icon className="h-5 w-5 text-slate-700" />
                 </div>
+              </div>
+              <h3
+                className="mb-2 text-xl font-bold text-slate-900"
+                style={{ fontFamily: "Orbitron, sans-serif" }}
+              >
+                {title}
+              </h3>
+              <p className="text-sm leading-relaxed text-slate-500">{description}</p>
             </div>
-        </>
-    )
-}
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+};
 
-export default Card
+export default Card;

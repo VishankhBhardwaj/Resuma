@@ -96,16 +96,26 @@ Return JSON in the following EXACT structure:
 `;
 
         const aiReply = await generatePortfolio(prompt);
-        const parsed = (aiReply);
+        let parsed = aiReply;
+        try {
+            let cleaned = aiReply.trim();
+            if (cleaned.startsWith("```")) {
+                cleaned = cleaned.replace(/^```json\s*/i, "").replace(/```$/, "").trim();
+            }
+            parsed = JSON.parse(cleaned);
+        } catch (e) {
+            console.error("Failed to parse Gemini response as JSON", e);
+        }
+        
         return NextResponse.json(
             { result: parsed },
             { status: 200 }
         );
 
     } catch (err) {
-        console.error(err);
+        console.error("Error in resume analysis API:", err);
         return NextResponse.json(
-            { error: "Failed to analyze resume" },
+            { error: err?.message || "Failed to analyze resume" },
             { status: 500 }
         );
     }

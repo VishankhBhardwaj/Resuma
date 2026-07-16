@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { UploadCloud, Plus, X, MoveRight, CircleCheckBig, Check,CircleCheck,Mic,ChartNoAxesCombined,Zap } from "lucide-react";
+import { UploadCloud, Plus, X, MoveRight, CircleCheckBig, Check, CircleCheck, Mic, ChartNoAxesCombined, Zap, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ export default function Page() {
   const [analysis, setAnalysis] = useState(false);
   const [text, setText] = useState('');
   const [file, setFile] = useState();
+  const [loading, setLoading] = useState(false);
   const [aiReply, setAiReply] = useState({
     overallScore: null,
     strengths: [],
@@ -49,26 +50,52 @@ export default function Page() {
     setTechnologies((prev) => prev.filter((_, i) => i !== id));
   };
   const analyzeResume = async () => {
+    if (resumeUpload && !file) {
+      toast.error("Please upload a resume first.");
+      return;
+    }
+    if (!resumeUpload && !text.trim()) {
+      toast.error("Please paste your resume text first.");
+      return;
+    }
+    if (!jobTitle.trim()) {
+      toast.error("Please enter a job title.");
+      return;
+    }
+
+    setLoading(true);
+    const toastId = toast.loading("Analyzing and optimizing your resume...");
+
     try {
-      const extractedText = await pdfToText(file);
-      console.log("yha", extractedText);
-      setText(extractedText);
+      let extractedText = text;
+      if (resumeUpload) {
+        extractedText = await pdfToText(file);
+        setText(extractedText);
+      }
+      
       const payload = {
         text: extractedText,
         jobTitle: jobTitle,
         jobDesc: jobDesc,
         requiredSkills: technologies
       };
+      
       const reply = await axios.post('/api/resume', payload);
-      if (reply) {
+      if (reply && reply.data?.result?.analysis) {
         setAnalysis(true);
         setAiReply(reply.data.result.analysis);
-        console.log(reply.data.result.analysis)
+        toast.success("Resume analyzed successfully", { id: toastId });
+      } else {
+        toast.error("Failed to parse the analysis response", { id: toastId });
       }
     } catch (error) {
-      console.error("Failed to extract text from pdf", error);
+      console.error("Failed to analyze resume", error);
+      const errorMessage = error?.response?.data?.error || error?.message || "Failed to analyze resume";
+      toast.error(error, { id: toastId });
+    } finally {
+      setLoading(false);
     }
-  }
+  };
   return (
     <div className="flex flex-col gap-2 p-2 h-full">
       <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 border border-purple-200 backdrop-blur-sm mb-4 md:w-[15%] w-[50%]">
@@ -113,7 +140,7 @@ export default function Page() {
               <div className="p-5">
                 {resumeUpload ? (
 
-                  <label className="flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed border-gray-300 py-10 text-center  hover:bg-gray-50 hover:border-blue-500 transition-all duration-300">
+                  <label className={`flex cursor-pointer flex-col items-center justify-center gap-3 rounded-lg border-2 border-dashed py-10 text-center transition-all duration-300 ${file ? "border-blue-500 bg-blue-50/20" : "border-gray-300 hover:bg-gray-50 hover:border-blue-500"}`}>
 
                     <input
                       type="file"
@@ -129,22 +156,28 @@ export default function Page() {
                       }
                     />
 
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-                      <UploadCloud className="h-6 w-6 text-blue-600" />
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-full ${file ? "bg-green-100" : "bg-blue-100"}`}>
+                      {file ? (
+                        <CircleCheck className="h-6 w-6 text-green-600" />
+                      ) : (
+                        <UploadCloud className="h-6 w-6 text-blue-600" />
+                      )}
                     </div>
 
-                    <p className="text-sm font-semibold text-gray-800">
-                      Click to upload or drag and drop
+                    <p className="text-sm font-semibold text-gray-800 px-4 truncate max-w-[90%]">
+                      {file ? file.name : "Click to upload or drag and drop"}
                     </p>
 
                     <p className="text-xs text-gray-500">
-                      PDF, DOCX, or TXT (Max 5MB)
+                      {file ? "Click to choose a different file" : "PDF, DOCX, or TXT (Max 5MB)"}
                     </p>
                   </label>
 
                 ) : (
                   <textarea
                     placeholder="Paste your resume text here..."
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
                     className="min-h-45 w-full resize-none rounded-lg border border-gray-300 p-4 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   />
                 )}
@@ -217,7 +250,20 @@ export default function Page() {
           </div>
           <Button
             onClick={analyzeResume}
-            className="bg-black text-white mt-auto cursor-pointer">Analyze & Optimize Resume<MoveRight /></Button>
+            disabled={loading}
+            className="bg-black text-white mt-auto cursor-pointer flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+            {loading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Analyzing & Optimizing...
+              </>
+            ) : (
+              <>
+                Analyze & Optimize Resume
+                <MoveRight className="h-4 w-4" />
+              </>
+            )}
+          </Button>
         </div>
       </div> :
         <div className="flex flex-col h-full p-2 gap-4">
