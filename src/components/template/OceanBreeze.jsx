@@ -1,6 +1,6 @@
 import React from 'react';
 import { Mail, Phone, MapPin, ExternalLink, Github, Instagram, Linkedin, Award } from 'lucide-react';
-
+import Image from 'next/image';
 const OceanBreeze = ({ data }) => {
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-white text-slate-800 font-light selection:bg-teal-100">
@@ -11,10 +11,12 @@ const OceanBreeze = ({ data }) => {
           {/* Profile Photo Section */}
           <div className="relative group w-32 h-32 md:w-40 md:h-40 mx-auto md:mx-0">
             <div className="absolute inset-0 bg-white/20 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500"></div>
-            <img 
+            <Image
               src={data.profilePhoto || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fit=crop&w=300&h=300"} 
               alt={data.fullName}
               className="relative z-10 w-full h-full object-cover rounded-2xl shadow-2xl border-2 border-white/50"
+              width={40}
+                height={40}
             />
           </div>
 
@@ -120,8 +122,17 @@ const OceanBreeze = ({ data }) => {
           <div className="grid grid-cols-1 gap-12">
             {data.projects.map((project, i) => (
               <div key={i} className="group flex flex-col md:flex-row gap-8 items-center border-b border-slate-100 pb-12 animate__animated animate__fadeInUp">
-                <div className={`w-full md:w-1/2 aspect-video bg-gradient-to-br ${data.gradient} rounded-2xl opacity-10 group-hover:opacity-20 transition-opacity flex items-center justify-center relative overflow-hidden`}>
-                  <ExternalLink size={40} className="text-slate-400 group-hover:scale-110 transition-transform" />
+                <div className="w-full md:w-1/2 aspect-video rounded-2xl relative overflow-hidden flex items-center justify-center bg-slate-50 border border-slate-100 shadow-sm">
+                  {project.imageUrl ? (
+                    <img 
+                      src={project.imageUrl} 
+                      alt={project.title} 
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className={`absolute inset-0 bg-gradient-to-br ${data.gradient} opacity-10 group-hover:opacity-20 transition-opacity`} />
+                  )}
+                  <ExternalLink size={40} className="text-slate-400 relative z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
                 <div className="w-full md:w-1/2 space-y-4">
                   <h3 className="text-3xl font-bold tracking-tight">{project.title}</h3>

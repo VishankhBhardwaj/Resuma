@@ -8,6 +8,7 @@ import {
   Settings,
   PlusCircle,
   FolderKanban,
+  Phone,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -27,6 +28,7 @@ import { Dropbox } from "@/components/ui/Dropbox";
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "Interview Prep", url: "/dashboard/interviewprep", icon: BriefcaseBusiness },
+  { title: "Voice Interview", url: "/dashboard/voiceprep", icon: Phone },
   { title: "Analyze Resume", url: "/dashboard/analyzeresumes", icon: FileScan },
   { title: "My Portfolios", url: "/dashboard/myportfolios", icon: FolderKanban },
   { title: "Create Portfolio", url: "/dashboard/createportfolio", icon: PlusCircle },

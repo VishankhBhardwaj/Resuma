@@ -1,6 +1,6 @@
 import React from 'react';
 import { Mail, MapPin, ExternalLink, Github, Star, Heart, Phone, Globe } from 'lucide-react';
-
+import Image from 'next/image';
 const SunsetGlow = ({ data }) => {
   // 1. Top-level Guard: Ensures the component doesn't run if data is null
   if (!data) return <div className="min-h-screen bg-[#fffcf9] flex items-center justify-center font-serif italic text-stone-400">Loading Journey...</div>;
@@ -25,10 +25,12 @@ const SunsetGlow = ({ data }) => {
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="mb-10 animate__animated animate__zoomIn">
             <div className={`inline-block p-1 rounded-full bg-gradient-to-tr ${data.gradient || 'from-orange-400 to-rose-400'}`}>
-              <img 
+              <Image
                 src={data.profilePhoto || "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=400&h=400"} 
                 className="w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-[#fffcf9] object-cover"
                 alt={data.fullName || "Portfolio Owner"}
+                width={40}
+                height={40}
               />
             </div>
           </div>
@@ -84,9 +86,17 @@ const SunsetGlow = ({ data }) => {
             {(data.projects || []).map((project, i) => (
               <div key={i} className={`group space-y-6 animate__animated animate__fadeInUp ${i % 2 !== 0 ? 'md:mt-24' : ''}`}>
                 <div className="relative aspect-[4/5] overflow-hidden rounded-3xl shadow-2xl bg-stone-100">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${data.gradient || 'from-orange-400 to-rose-400'} opacity-20 group-hover:opacity-40 transition-opacity duration-700`}></div>
-                  <div className="absolute inset-0 flex items-center justify-center text-stone-800">
-                    <ExternalLink size={48} className="opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100" />
+                  {project?.imageUrl ? (
+                    <img 
+                      src={project.imageUrl} 
+                      alt={project?.title} 
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  ) : (
+                    <div className={`absolute inset-0 bg-gradient-to-br ${data.gradient || 'from-orange-400 to-rose-400'} opacity-20 group-hover:opacity-40 transition-opacity duration-700`} />
+                  )}
+                  <div className="absolute inset-0 flex items-center justify-center text-white bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    <ExternalLink size={48} className="scale-50 group-hover:scale-100 transition-all duration-500" />
                   </div>
                 </div>
                 <div className="space-y-2">

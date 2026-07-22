@@ -1,6 +1,6 @@
 import React from 'react';
 import { Github, ExternalLink, Mail, Phone, MapPin, Terminal, Cpu, Box, Layout, Circle } from 'lucide-react';
-
+import Image from 'next/image';
 const MidnightBlue = ({ data }) => {
   return (
     <div className="min-h-screen bg-[#020617] text-slate-300 font-sans selection:bg-blue-500/30">
@@ -27,10 +27,12 @@ const MidnightBlue = ({ data }) => {
           <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 text-center animate__animated animate__fadeIn">
             <div className="relative inline-block mb-6">
               <div className={`absolute inset-0 bg-gradient-to-tr ${data.gradient} rounded-2xl blur-2xl opacity-20 animate-pulse`}></div>
-              <img 
+              <Image 
                 src={data.profilePhoto || "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?fit=crop&w=300&h=300"} 
                 className="relative w-32 h-32 mx-auto rounded-2xl border border-slate-700 object-cover shadow-2xl"
                 alt={data.fullName}
+                width={40}
+                height={40}
               />
             </div>
             <h1 className="text-2xl font-bold text-white tracking-tight">{data.fullName}</h1>
@@ -131,7 +133,12 @@ const MidnightBlue = ({ data }) => {
             <div className="grid grid-cols-1 gap-4">
               {data.projects.map((project, i) => (
                 <div key={i} className="bg-slate-950 border border-slate-800 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-center gap-6 hover:bg-slate-900/50 transition-all group">
-                  <div className="space-y-2">
+                  {project.imageUrl && (
+                    <div className="w-full md:w-32 h-20 rounded-xl overflow-hidden relative shrink-0 border border-slate-800">
+                      <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    </div>
+                  )}
+                  <div className="space-y-2 flex-grow">
                     <h4 className="text-xl font-bold text-white">{project.title}</h4>
                     <p className="text-sm text-slate-500 max-w-xl">{project.description}</p>
                     <div className="flex flex-wrap gap-2 pt-2">

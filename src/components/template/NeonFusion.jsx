@@ -129,8 +129,17 @@ const NeonFusion = ({ data }) => {
           <div className="grid md:grid-cols-2 gap-8">
             {(data.projects || []).map((project, index) => (
               <div key={index} className="group bg-slate-800 border border-white/5 rounded-2xl overflow-hidden hover:border-fuchsia-500/50 transition-all">
-                <div className={`h-40 bg-gradient-to-br ${data.gradient || 'from-fuchsia-500 to-indigo-600'} opacity-10 group-hover:opacity-20 transition-all flex items-center justify-center`}>
-                   <Globe size={40} className="text-fuchsia-500" />
+                <div className="h-40 relative overflow-hidden flex items-center justify-center bg-slate-900">
+                  {project?.imageUrl ? (
+                    <img 
+                      src={project.imageUrl} 
+                      alt={project?.title} 
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className={`absolute inset-0 bg-gradient-to-br ${data.gradient || 'from-fuchsia-500 to-indigo-600'} opacity-10 group-hover:opacity-20 transition-all`} />
+                  )}
+                  {!project?.imageUrl && <Globe size={40} className="text-fuchsia-500 relative z-10" />}
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl font-bold mb-2">{project?.title}</h3>

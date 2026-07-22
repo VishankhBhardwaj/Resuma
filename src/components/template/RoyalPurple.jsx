@@ -1,6 +1,6 @@
 import React from 'react';
 import { Github, ExternalLink, Mail, Phone, MapPin, User, Briefcase, Zap } from 'lucide-react';
-
+import Image from 'next/image';
 const RoyalPurple = ({ data }) => {
   // 1. Structural Safety Check: If data is missing entirely, show a loader or null
   if (!data) return <div className="p-20 text-center font-mono">Loading System Data...</div>;
@@ -13,10 +13,12 @@ const RoyalPurple = ({ data }) => {
         <header className={`p-8 md:p-12 border-b-[4px] border-black bg-gradient-to-r ${data.gradient || 'from-purple-600 to-blue-600'} text-white flex flex-col md:flex-row items-center gap-8`}>
           <div className="relative">
             <div className="absolute -inset-2 bg-yellow-400 border-[3px] border-black rounded-full rotate-6 animate__animated animate__pulse animate__infinite"></div>
-            <img 
+            <Image
               src={data.profilePhoto || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?fit=crop&w=300&h=300"} 
               className="relative w-32 h-32 md:w-44 md:h-44 rounded-full border-[4px] border-black object-cover z-10 shadow-xl"
               alt={data.fullName || 'User'}
+              width={40}
+                height={40}
             />
           </div>
           <div className="text-center md:text-left z-10">
@@ -95,11 +97,19 @@ const RoyalPurple = ({ data }) => {
             <section>
               <h2 className="text-3xl font-black uppercase mb-8">Projects</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* 4. Safety Check for Projects Array */}
                 {(data.projects || []).map((proj, i) => (
                   <div key={i} className="border-[3px] border-black rounded-lg overflow-hidden group hover:scale-[1.02] transition-transform shadow-[8px_8px_0px_0px_rgba(168,85,247,1)]">
-                    <div className={`h-40 bg-gradient-to-br ${data.gradient || 'from-purple-500 to-pink-500'} border-b-[3px] border-black flex items-center justify-center p-6 text-white text-center`}>
-                      <h4 className="text-2xl font-black uppercase rotate-[-5deg]">{proj.title}</h4>
+                    <div className="h-40 border-b-[3px] border-black relative overflow-hidden flex items-center justify-center p-6 text-white text-center">
+                      {proj.imageUrl ? (
+                        <img 
+                          src={proj.imageUrl} 
+                          alt={proj.title} 
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className={`absolute inset-0 bg-gradient-to-br ${data.gradient || 'from-purple-500 to-pink-500'}`} />
+                      )}
+                      <h4 className="text-2xl font-black uppercase rotate-[-5deg] relative z-10 drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">{proj.title}</h4>
                     </div>
                     <div className="p-4 bg-white">
                       <p className="font-bold text-xs mb-4 line-clamp-3 text-black">{proj.description}</p>

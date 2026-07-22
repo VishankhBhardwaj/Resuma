@@ -6,7 +6,7 @@ import { ArrowUpIcon, X, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import 'animate.css';
 import { toast } from "sonner";
-
+import Image from "next/image";
 
 const ProfileInformation = ({ onSubmit, data }) => {
   const [links, setLinks] = useState([
@@ -86,10 +86,12 @@ const ProfileInformation = ({ onSubmit, data }) => {
           <div className="flex items-center gap-6">
 
             <div className="w-35 md:w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
-              <img
+              <Image
                 src={preview || "/img.jpg"}
                 alt="profile"
                 className="w-full h-full object-cover"
+                width={40}
+                height={40}
               />
             </div>
 

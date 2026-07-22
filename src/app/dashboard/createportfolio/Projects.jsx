@@ -20,6 +20,7 @@ const Projects = ({ onSubmit, data }) => {
         featured: false,
         description: "",
         technologiesUsed: [""],
+        file:null
       }
     ])
   }
