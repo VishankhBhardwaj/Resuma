@@ -49,6 +49,7 @@ export default function Page() {
   const removeTech = (id) => {
     setTechnologies((prev) => prev.filter((_, i) => i !== id));
   };
+
   const analyzeResume = async () => {
     if (resumeUpload && !file) {
       toast.error("Please upload a resume first.");
@@ -84,6 +85,7 @@ export default function Page() {
       if (reply && reply.data?.result?.analysis) {
         setAnalysis(true);
         setAiReply(reply.data.result.analysis);
+        updateResumeAnalyzeCount();
         toast.success("Resume analyzed successfully", { id: toastId });
       } else {
         toast.error("Failed to parse the analysis response", { id: toastId });
@@ -94,6 +96,13 @@ export default function Page() {
       toast.error(error, { id: toastId });
     } finally {
       setLoading(false);
+    }
+  };
+  const updateResumeAnalyzeCount = async () => {
+    try{
+      const res = await axios.post('/api/analyze-count');
+    } catch (error) {
+      console.error("Error updating resume analyze count:", error);
     }
   };
   return (

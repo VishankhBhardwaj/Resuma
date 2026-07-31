@@ -5,7 +5,6 @@ import { Pencil, Download, Trash, Eye, Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import axios from "axios";
-
 const ResumeCard = ({ id, title, lastEdited, status = "Active" }) => {
   const [deleted, setDeleted] = useState(false);
   
@@ -20,7 +19,9 @@ const ResumeCard = ({ id, title, lastEdited, status = "Active" }) => {
   const handleClick = () => {
     router.push(`/p/${id}/portfolio`);
   }
-  
+  const handleDownload = () =>{
+    router.push(`/p/${id}/portfolio?download=true`)
+  }
   const handleDelete = async () => {
     try {
       const reply = await axios.post("/api/portfolios/Delete", { id });
@@ -87,7 +88,8 @@ const ResumeCard = ({ id, title, lastEdited, status = "Active" }) => {
             >
               <Eye className="h-4 w-4" />
             </button>
-            <button 
+            <button
+              onClick={handleDownload}
               className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
               title="Download"
             >

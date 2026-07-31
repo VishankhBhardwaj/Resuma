@@ -1,10 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { User, Bell, Shield, Palette, Zap, Save, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  User,
+  Bell,
+  Shield,
+  Palette,
+  Zap,
+  Save,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { toast } from "sonner";
-
+import { useUser } from "@clerk/nextjs";
 export default function SettingsPage() {
+  const { isSignedIn, user, isLoaded } = useUser();
   const [activeTab, setActiveTab] = useState("profile");
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -16,7 +28,19 @@ export default function SettingsPage() {
     newPassword: "",
     confirmPassword: "",
   });
+  useEffect(() => {
+    if (!isLoaded) return;
 
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        fullName: user.fullName || "",
+        email: user.primaryEmailAddress?.emailAddress || "",
+        phone: user.phoneNumbers?.[0]?.phoneNumber || "",
+        bio: user.bio || "",
+      }));
+    }
+  }, [isLoaded, user]);
   const [preferences, setPreferences] = useState({
     emailNotifications: true,
     portfolioUpdates: true,
@@ -35,7 +59,21 @@ export default function SettingsPage() {
     setPreferences((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleSaveProfile = () => {
+  const handleSaveProfile = async () => {
+    try {
+        await user.update({
+          firstName: formData.fullName.split(" ")[0],
+          lastName: formData.fullName.split(" ").slice(1).join(" "),
+          publicMetadata: {
+            bio: formData.bio,
+          },
+        });
+
+        toast.success("Profile updated successfully!");
+      } catch (error) {
+        console.log(error);
+        toast.error("Error updating profile");
+      }
     toast.success("Profile updated successfully!");
   };
 
@@ -47,7 +85,9 @@ export default function SettingsPage() {
     toast.success("Password updated successfully!");
   };
 
-  const handleSavePreferences = () => {
+  const handleSavePreferences = async () => {
+
+      
     toast.success("Preferences saved successfully!");
   };
 
@@ -69,7 +109,9 @@ export default function SettingsPage() {
         <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-purple-900 to-blue-900 bg-clip-text text-transparent">
           Account Settings
         </h1>
-        <p className="text-gray-600 text-lg mt-2">Manage your account preferences and settings</p>
+        <p className="text-gray-600 text-lg mt-2">
+          Manage your account preferences and settings
+        </p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6 animate__animated animate__fadeInUp">
@@ -82,12 +124,15 @@ export default function SettingsPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-500 ${isActive
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-500 ${
+                  isActive
                     ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg shadow-purple-500/30"
                     : "bg-white/60 backdrop-blur-sm text-gray-700 hover:bg-white/80 border border-gray-200"
-                  }`}
+                }`}
               >
-                <Icon className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-600"}`} />
+                <Icon
+                  className={`h-5 w-5 ${isActive ? "text-white" : "text-gray-600"}`}
+                />
                 <span className="font-medium">{tab.label}</span>
               </button>
             );
@@ -104,7 +149,9 @@ export default function SettingsPage() {
                   <User className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Profile Information</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Profile Information
+                  </h2>
                   <p className="text-gray-600">Update your personal details</p>
                 </div>
               </div>
@@ -133,14 +180,18 @@ export default function SettingsPage() {
                     <button className="px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300">
                       Upload Photo
                     </button>
-                    <p className="text-sm text-gray-500 mt-2">JPG, PNG or GIF (max. 2MB)</p>
+                    <p className="text-sm text-gray-500 mt-2">
+                      JPG, PNG or GIF (max. 2MB)
+                    </p>
                   </div>
                 </div>
 
                 {/* Form Fields */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Full Name
+                    </label>
                     <input
                       type="text"
                       name="fullName"
@@ -151,7 +202,9 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email Address
+                    </label>
                     <input
                       type="email"
                       name="email"
@@ -162,7 +215,9 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone Number
+                    </label>
                     <input
                       type="tel"
                       name="phone"
@@ -173,7 +228,9 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Bio
+                    </label>
                     <textarea
                       name="bio"
                       value={formData.bio}
@@ -204,34 +261,62 @@ export default function SettingsPage() {
                   <Bell className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Notification Preferences</h2>
-                  <p className="text-gray-600">Manage how you receive notifications</p>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Notification Preferences
+                  </h2>
+                  <p className="text-gray-600">
+                    Manage how you receive notifications
+                  </p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 {[
-                  { key: "emailNotifications", label: "Email Notifications", description: "Receive email updates about your account" },
-                  { key: "portfolioUpdates", label: "Portfolio Updates", description: "Get notified when your portfolio is viewed" },
-                  { key: "resumeAnalysis", label: "Resume Analysis", description: "Receive AI-powered resume insights" },
-                  { key: "marketingEmails", label: "Marketing Emails", description: "Promotional content and feature updates" },
+                  {
+                    key: "emailNotifications",
+                    label: "Email Notifications",
+                    description: "Receive email updates about your account",
+                  },
+                  {
+                    key: "portfolioUpdates",
+                    label: "Portfolio Updates",
+                    description: "Get notified when your portfolio is viewed",
+                  },
+                  {
+                    key: "resumeAnalysis",
+                    label: "Resume Analysis",
+                    description: "Receive AI-powered resume insights",
+                  },
+                  {
+                    key: "marketingEmails",
+                    label: "Marketing Emails",
+                    description: "Promotional content and feature updates",
+                  },
                 ].map((item) => (
                   <div
                     key={item.key}
                     className="flex items-center justify-between p-4 rounded-xl bg-white/80 border border-gray-200 hover:border-purple-300 transition-all"
                   >
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{item.label}</h3>
-                      <p className="text-sm text-gray-600">{item.description}</p>
+                      <h3 className="font-medium text-gray-900">
+                        {item.label}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {item.description}
+                      </p>
                     </div>
                     <button
                       onClick={() => handlePreferenceChange(item.key)}
-                      className={`relative w-14 h-7 rounded-full transition-all duration-300 ${preferences[item.key] ? "bg-gradient-to-r from-purple-500 to-blue-500" : "bg-gray-300"
-                        }`}
+                      className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
+                        preferences[item.key]
+                          ? "bg-gradient-to-r from-purple-500 to-blue-500"
+                          : "bg-gray-300"
+                      }`}
                     >
                       <div
-                        className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full transition-transform duration-300 ${preferences[item.key] ? "translate-x-7" : ""
-                          }`}
+                        className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full transition-transform duration-300 ${
+                          preferences[item.key] ? "translate-x-7" : ""
+                        }`}
                       />
                     </button>
                   </div>
@@ -256,14 +341,20 @@ export default function SettingsPage() {
                   <Shield className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Security Settings</h2>
-                  <p className="text-gray-600">Manage your password and security</p>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Security Settings
+                  </h2>
+                  <p className="text-gray-600">
+                    Manage your password and security
+                  </p>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Current Password
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <input
@@ -279,13 +370,19 @@ export default function SettingsPage() {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    New Password
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <input
@@ -300,7 +397,9 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Confirm New Password</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Confirm New Password
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <input
@@ -315,7 +414,9 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="p-4 rounded-xl bg-blue-50 border border-blue-200">
-                  <h4 className="font-medium text-blue-900 mb-2">Password Requirements:</h4>
+                  <h4 className="font-medium text-blue-900 mb-2">
+                    Password Requirements:
+                  </h4>
                   <ul className="text-sm text-blue-700 space-y-1">
                     <li>• At least 8 characters long</li>
                     <li>• Contains uppercase and lowercase letters</li>
@@ -343,29 +444,42 @@ export default function SettingsPage() {
                   <Palette className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">Appearance</h2>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Appearance
+                  </h2>
                   <p className="text-gray-600">Customize your interface</p>
                 </div>
               </div>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Theme</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Theme
+                  </label>
                   <div className="grid grid-cols-3 gap-4">
                     {["light", "dark", "auto"].map((theme) => (
                       <button
                         key={theme}
-                        onClick={() => setPreferences((prev) => ({ ...prev, theme }))}
-                        className={`p-4 rounded-xl border-2 transition-all ${preferences.theme === theme
+                        onClick={() =>
+                          setPreferences((prev) => ({ ...prev, theme }))
+                        }
+                        className={`p-4 rounded-xl border-2 transition-all ${
+                          preferences.theme === theme
                             ? "border-purple-500 bg-purple-50"
                             : "border-gray-200 bg-white/80 hover:border-purple-300"
-                          }`}
+                        }`}
                       >
                         <div className="text-center">
                           <div className="text-2xl mb-2">
-                            {theme === "light" ? "☀️" : theme === "dark" ? "🌙" : "⚙️"}
+                            {theme === "light"
+                              ? "☀️"
+                              : theme === "dark"
+                                ? "🌙"
+                                : "⚙️"}
                           </div>
-                          <div className="font-medium capitalize text-gray-900">{theme}</div>
+                          <div className="font-medium capitalize text-gray-900">
+                            {theme}
+                          </div>
                         </div>
                       </button>
                     ))}
@@ -373,10 +487,17 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">Language</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Language
+                  </label>
                   <select
                     value={preferences.language}
-                    onChange={(e) => setPreferences((prev) => ({ ...prev, language: e.target.value }))}
+                    onChange={(e) =>
+                      setPreferences((prev) => ({
+                        ...prev,
+                        language: e.target.value,
+                      }))
+                    }
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all outline-none bg-white/80"
                   >
                     <option value="en">English</option>

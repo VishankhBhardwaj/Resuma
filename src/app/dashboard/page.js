@@ -57,9 +57,9 @@ export default function Page() {
       }
       const data = await res.json();
       setStats({
-        resumes: data.resumeCount ?? "—",
+        resumes: data.resumeAnalyzeCount ?? "—",
         portfolios: data.portfolioCount ?? 0,
-        views: data.profileViews ?? "—",
+        views: data.totalViews ?? "—",
         month: data.monthlyGrowth ?? "—",
       });
     };

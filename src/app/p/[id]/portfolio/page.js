@@ -6,9 +6,14 @@ import { auth } from "@clerk/nextjs/server";
 export default async function Page({params}) {
   const {id} = await params;
   const {userId} = await auth();
+  
   const {data:portfolio,error} = await supabase.from("Portfolios").select("*").eq('id',id).single();
   if (!portfolio) {
     notFound();
+  }
+  if(portfolio && portfolio.clerk_user_id !== userId){
+    const id  = portfolio.id;
+    await supabase.from("Portfolios").update({views:portfolio.views+1}).eq("id",id);
   }
   const Template = template[portfolio.template];
   if(!Template) {

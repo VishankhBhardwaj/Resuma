@@ -8,11 +8,11 @@ export default function Page() {
   const [portfolios, setPortfolios] = useState([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
-  const filterPortfolios = portfolios.filter((portfolio) =>
+  const filterPortfolios = portfolios?.filter((portfolio) =>
     portfolio.form_data.professionalTitle
       .toLowerCase()
       .includes(query.toLowerCase()),
-  );
+  ) || [];
   useEffect(() => {
     const fetchPortfolios = async () => {
       const res = await fetch("/api/portfolios/Data");

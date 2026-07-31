@@ -12,12 +12,22 @@ export async function GET() {
       .from("Portfolios")
       .select("*", { count: "exact" })
       .eq("clerk_user_id", userId);
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    const {data,Porterror} = await supabase
+      .from("Portfolios")
+      .select("views")
+      .eq("clerk_user_id", userId);
+    const {resumeCount,resumeError} = await supabase
+    .from("users")
+    .select("analyze_count")
+    .eq("clerk_user_id", userId);
+    if (Porterror || error || resumeError) {
+      return NextResponse.json({ error: Porterror?.message || error?.message || resumeError?.message }, { status: 500 });
     }
     console.log("Portfolio count:", count);
     return NextResponse.json({
       portfolioCount: count ?? 0,
+      totalViews: data.reduce((sum, portfolio) => sum + portfolio.views, 0),
+      resumeAnalyzeCount: resumeCount?.[0]?.analyze_count ?? 0
     });
   } catch (error) {
     console.error("Error fetching dashboard stats:", error);
