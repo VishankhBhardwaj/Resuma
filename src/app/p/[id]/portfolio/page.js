@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { template } from "@/components/template";
 import { auth } from "@clerk/nextjs/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({params}) {
   const {id} = await params;
   const {userId} = await auth();

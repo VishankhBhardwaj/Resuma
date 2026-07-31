@@ -1,4 +1,4 @@
-import {supabase} from "@/lib/supabase";
+import {supabase} from "@/lib/supabase/server";
 import { auth } from "@clerk/nextjs/server";
 
 export async function POST(req){

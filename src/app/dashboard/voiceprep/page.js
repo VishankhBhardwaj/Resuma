@@ -1,18 +1,26 @@
 "use client";
 
-import { 
-  Phone,
-  PhoneOff,
-  Mic,
-  MicOff,
-  Sparkles,
-  Volume2,
-  User,
-  BotMessageSquare
+import {
+    Phone,
+    PhoneOff,
+    Mic,
+    MicOff,
+    Sparkles,
+    Volume2,
+    User,
+    BotMessageSquare,
+    Award,
+    CheckCircle2,
+    AlertTriangle,
+    TrendingUp,
+    X,
+    Star
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import "animate.css";
+import axios from "axios";
+import Loader from "@/components/ui/Loader";
 
 export default function VoicePrepPage() {
     // Vapi states
@@ -22,7 +30,15 @@ export default function VoicePrepPage() {
     const [isMuted, setIsMuted] = useState(false);
     const [volume, setVolume] = useState(0);
     const [voiceMessages, setVoiceMessages] = useState([]);
+    const [isLoadingFeedback, setIsLoadingFeedback] = useState(false);
+    const [feedback, setFeedback] = useState(null);
     const voiceBottomRef = useRef(null);
+    const voiceMessagesRef = useRef([]);
+
+    useEffect(() => {
+        voiceMessagesRef.current = voiceMessages;
+    }, [voiceMessages]);
+
 
     useEffect(() => {
         try {
@@ -50,11 +66,33 @@ export default function VoicePrepPage() {
             toast.success("Voice session started! Speak clearly into your mic.");
         };
 
-        const handleCallEnd = () => {
+        const handleCallEnd = async () => {
             setIsCallActive(false);
             setIsConnecting(false);
             setVolume(0);
-            toast.info("Voice session ended.");
+            toast.info("Voice session ended. Analyzing performance...");
+
+            const currentMessages = voiceMessagesRef.current;
+            if (!currentMessages || currentMessages.length === 0) {
+                toast.error("No transcript collected. Please start a session and speak.");
+                return;
+            }
+
+            setIsLoadingFeedback(true);
+            try {
+                const response = await axios.post("/api/voiceprep/getFeedback", { messages: currentMessages });
+                if (response.data && response.data.feedback) {
+                    toast.success("Feedback analysis complete!");
+                    setFeedback(response.data.feedback);
+                } else {
+                    toast.error("No feedback details were received. Please try again.");
+                }
+            } catch (err) {
+                console.error("Feedback error:", err);
+                toast.error(err?.response?.data?.error || "Error generating feedback. Please try again.");
+            } finally {
+                setIsLoadingFeedback(false);
+            }
         };
 
         const handleMessage = (message) => {
@@ -219,11 +257,10 @@ export default function VoicePrepPage() {
                                 <>
                                     <button
                                         onClick={toggleMute}
-                                        className={`flex h-12 w-12 items-center justify-center rounded-xl border transition-all duration-200 ${
-                                            isMuted 
-                                                ? "bg-red-50 border-red-200 text-red-600" 
+                                        className={`flex h-12 w-12 items-center justify-center rounded-xl border transition-all duration-200 ${isMuted
+                                                ? "bg-red-50 border-red-200 text-red-600"
                                                 : "bg-slate-100 border-slate-200 text-slate-655 hover:bg-slate-200"
-                                        }`}
+                                            }`}
                                         title={isMuted ? "Unmute Mic" : "Mute Mic"}
                                     >
                                         {isMuted ? <MicOff size={18} /> : <Mic size={18} />}
@@ -284,25 +321,22 @@ export default function VoicePrepPage() {
                             voiceMessages.map((msg, i) => (
                                 <div
                                     key={i}
-                                    className={`flex gap-3 max-w-[85%] ${
-                                        msg.role === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
-                                    } animate__animated animate__fadeInUp`}
+                                    className={`flex gap-3 max-w-[85%] ${msg.role === "user" ? "ml-auto flex-row-reverse" : "mr-auto"
+                                        } animate__animated animate__fadeInUp`}
                                 >
                                     {/* Avatar */}
-                                    <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg p-0.5 text-white ${
-                                        msg.role === "user" 
-                                            ? "bg-slate-800" 
+                                    <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg p-0.5 text-white ${msg.role === "user"
+                                            ? "bg-slate-800"
                                             : "bg-gradient-to-br from-cyan-500 to-purple-500"
-                                    }`}>
+                                        }`}>
                                         {msg.role === "user" ? <User size={14} /> : <BotMessageSquare size={14} />}
                                     </div>
 
                                     {/* Bubble */}
-                                    <div className={`rounded-xl px-4 py-2.5 text-sm shadow-sm ${
-                                        msg.role === "user"
+                                    <div className={`rounded-xl px-4 py-2.5 text-sm shadow-sm ${msg.role === "user"
                                             ? "bg-slate-900 text-white"
                                             : "bg-white text-slate-700 border border-slate-100"
-                                    }`}>
+                                        }`}>
                                         <p className="leading-relaxed">{msg.content}</p>
                                     </div>
                                 </div>
@@ -312,6 +346,161 @@ export default function VoicePrepPage() {
                     </div>
                 </div>
             </div>
+            {isLoadingFeedback && <Loader />}
+            {feedback && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4 animate__animated animate__fadeIn">
+                    <div className="relative w-full max-w-4xl max-h-[90vh] bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-y-auto p-6 md:p-8 animate__animated animate__zoomIn">
+
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setFeedback(null)}
+                            className="absolute top-4 right-4 p-2 text-slate-450 hover:text-slate-700 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        >
+                            <X size={20} />
+                        </button>
+
+                        {/* Modal Header */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-6 mb-6 gap-4">
+                            <div className="flex items-center gap-3">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-500 via-purple-500 to-pink-500 p-0.5 shadow-md">
+                                    <div className="flex h-full w-full items-center justify-center rounded-[14px] bg-white dark:bg-slate-900">
+                                        <Award className="h-6 w-6 text-cyan-600 dark:text-cyan-400" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <h2 className="text-2xl font-bold text-slate-950 dark:text-white" style={{ fontFamily: "Orbitron, sans-serif" }}>
+                                        Interview Performance Review
+                                    </h2>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400">Gemini AI evaluation and performance analysis</p>
+                                </div>
+                            </div>
+
+                            {/* Score Widget */}
+                            <div className="flex items-center gap-3 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/30 dark:to-indigo-950/30 border border-purple-100 dark:border-purple-900/50 rounded-2xl px-5 py-3 self-start sm:self-auto">
+                                <Star className="fill-yellow-400 text-yellow-400 h-6 w-6" />
+                                <div>
+                                    <div className="text-2xl font-extrabold text-slate-900 dark:text-white leading-none">
+                                        {feedback.overallRating || feedback.overallScore || "8"}/10
+                                    </div>
+                                    <div className="text-[10px] uppercase font-bold text-purple-650 dark:text-purple-400 tracking-wider mt-1">
+                                        Overall Score
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Modal Body */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                            {/* Left Column: Detailed evaluation sections */}
+                            <div className="space-y-6">
+                                {/* Communication feedback */}
+                                <div className="bg-slate-50/50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-850 p-5 rounded-2xl">
+                                    <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2">
+                                        Communication Skills
+                                    </h3>
+                                    <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-350">
+                                        {feedback.communicationFeedback}
+                                    </p>
+                                </div>
+
+                                {/* Technical feedback */}
+                                <div className="bg-slate-50/50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-850 p-5 rounded-2xl">
+                                    <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2">
+                                        Technical Knowledge
+                                    </h3>
+                                    <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-350">
+                                        {feedback.technicalFeedback}
+                                    </p>
+                                </div>
+
+                                {/* Project Explanation */}
+                                <div className="bg-slate-50/50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-850 p-5 rounded-2xl">
+                                    <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2">
+                                        Project Explanation
+                                    </h3>
+                                    <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-350">
+                                        {feedback.projectExplanationFeedback}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Right Column: Strengths & Improvement sections */}
+                            <div className="space-y-6">
+                                {/* Strengths */}
+                                <div className="border border-emerald-100 dark:border-emerald-950 bg-emerald-50/20 dark:bg-emerald-950/10 p-5 rounded-2xl">
+                                    <h3 className="text-sm font-bold text-emerald-800 dark:text-emerald-450 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                        <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                                        Strengths
+                                    </h3>
+                                    <ul className="space-y-2">
+                                        {feedback.strengths && feedback.strengths.length > 0 ? (
+                                            feedback.strengths.map((strength, index) => (
+                                                <li key={index} className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
+                                                    <span className="text-emerald-500 font-bold">•</span>
+                                                    <span>{strength}</span>
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <li className="text-sm text-slate-400 italic">No specific strengths listed.</li>
+                                        )}
+                                    </ul>
+                                </div>
+
+                                {/* Areas of Improvement */}
+                                <div className="border border-amber-105 dark:border-amber-950 bg-amber-50/20 dark:bg-amber-950/10 p-5 rounded-2xl">
+                                    <h3 className="text-sm font-bold text-amber-805 dark:text-amber-450 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                        <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+                                        Areas of Improvement
+                                    </h3>
+                                    <ul className="space-y-2">
+                                        {feedback.improvementAreas && feedback.improvementAreas.length > 0 ? (
+                                            feedback.improvementAreas.map((area, index) => (
+                                                <li key={index} className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
+                                                    <span className="text-amber-500 font-bold">•</span>
+                                                    <span>{area}</span>
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <li className="text-sm text-slate-400 italic">No areas of improvement listed.</li>
+                                        )}
+                                    </ul>
+                                </div>
+
+                                {/* Action Plan */}
+                                <div className="border border-purple-105 dark:border-purple-950 bg-purple-50/20 dark:bg-purple-950/10 p-5 rounded-2xl">
+                                    <h3 className="text-sm font-bold text-purple-805 dark:text-purple-450 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                        <TrendingUp className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                                        Action Plan
+                                    </h3>
+                                    <ul className="space-y-2">
+                                        {feedback.actionPlan && feedback.actionPlan.length > 0 ? (
+                                            feedback.actionPlan.map((plan, index) => (
+                                                <li key={index} className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
+                                                    <span className="text-purple-500 font-bold">{index + 1}.</span>
+                                                    <span>{plan}</span>
+                                                </li>
+                                            ))
+                                        ) : (
+                                            <li className="text-sm text-slate-400 italic">No action items suggested.</li>
+                                        )}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+                            <button
+                                onClick={() => setFeedback(null)}
+                                className="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-white font-semibold transition-all shadow-md"
+                            >
+                                Done Reviewing
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

@@ -22,3 +22,12 @@ export async function generatePortfolio(prompt, retries = 3) {
   }
 }
 
+export async function generatePortfolioFeedback(prompt, messages) {
+  const transcriptString = messages
+    .map((msg) => `${msg.role === "user" ? "Candidate" : "Interviewer"}: ${msg.content}`)
+    .join("\n");
+  const fullPrompt = `${prompt}\n\nTranscript:\n${transcriptString}`;
+  return generatePortfolio(fullPrompt);
+}
+
+
