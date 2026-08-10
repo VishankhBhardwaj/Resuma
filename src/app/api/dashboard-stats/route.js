@@ -16,10 +16,10 @@ export async function GET() {
       .from("Portfolios")
       .select("views")
       .eq("clerk_user_id", userId);
-    const {resumeCount,resumeError} = await supabase
-    .from("users")
-    .select("analyze_count")
-    .eq("clerk_user_id", userId);
+    const { data: resumeCount, error: resumeError } = await supabase
+      .from("users")
+      .select("analyze_count")
+      .eq("clerk_user_id", userId);
     if (Porterror || error || resumeError) {
       return NextResponse.json({ error: Porterror?.message || error?.message || resumeError?.message }, { status: 500 });
     }

@@ -1,5 +1,7 @@
-import { Crown } from "lucide-react";
+import { Crown, Lock } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const templates = [
   {
@@ -47,9 +49,15 @@ const templates = [
 ];
 
 
-const ChooseTemplate = ({onSubmit,data}) => {
+const ChooseTemplate = ({onSubmit,data,isPremium}) => {
+  const router = useRouter();
   const [active,setActive] = useState();
   const handleClick = (card)=>{
+    if (card.isPremium && !isPremium) {
+      toast.error(`${card.title} is a Premium template. Please upgrade to unlock.`);
+      router.push("/dashboard/upgrade");
+      return;
+    }
     onSubmit(card,true);
   }
   return (
@@ -67,7 +75,7 @@ const ChooseTemplate = ({onSubmit,data}) => {
           <div
             onClick={()=>{setActive(card.id); handleClick(card)}}
             key={card.id}
-            className={`rounded-2xl border border-gray-200 shadow-sm bg-white overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer md:h-[400px]  hover:border hover:border-black ${active==card.id || data.id == card.id?"border-2 border-pink-400":""}`}
+            className={`rounded-2xl border border-gray-200 shadow-sm bg-white overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer md:h-[400px]  hover:border hover:border-black ${active==card.id || data.id == card.id?"border-2 border-pink-400":""} ${card.isPremium && !isPremium ? "opacity-80 hover:opacity-100" : ""}`}
           >
             {/* Top preview gradient */}
             <div
@@ -75,9 +83,9 @@ const ChooseTemplate = ({onSubmit,data}) => {
             >
               {/* Premium badge */}
               {card.isPremium && (
-                <div className="absolute top-2 left-2 bg-yellow-400 text-white text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1 shadow-md">
-                  <Crown size={14} className="text-white" />
-                  Premium
+                <div className={`absolute top-2 left-2 text-white text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1 shadow-md ${isPremium ? "bg-amber-400" : "bg-slate-700/90"}`}>
+                  {isPremium ? <Crown size={14} className="text-white" /> : <Lock size={14} className="text-white" />}
+                  {isPremium ? "Premium" : "Locked"}
                 </div>
               )}
             </div>

@@ -1,6 +1,6 @@
 "use client";
 import StepProgress from "@/components/ui/StepProgress";
-import { ChevronLeft, ChevronRight, Zap } from "lucide-react";
+import { ChevronLeft, ChevronRight, Zap, Crown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import pdfToText from 'react-pdftotext';
 import ChooseTemplate from "./ChooseTemplate";
@@ -22,7 +22,22 @@ export default function Page() {
   const setData = usePortfolioStore((state) => state.setData);
   const [stepValid, setStepValid] = useState(false);
   const [parsing, setParsing] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const checkPremiumStatus = async () => {
+      try {
+        const response = await axios.get("/api/user");
+        if (response.data) {
+          setIsPremium(response.data.isPremium || false);
+        }
+      } catch (error) {
+        console.error("Error checking premium status in creator page:", error);
+      }
+    };
+    checkPremiumStatus();
+  }, []);
 
   const handleResumeUpload = async (e) => {
     const file = e.target.files[0];
@@ -64,7 +79,7 @@ export default function Page() {
   const renderStepComponent = () => {
     switch (currStep) {
       case 1:
-        return <ChooseTemplate onSubmit={handleSubmit} data={data} />;
+        return <ChooseTemplate onSubmit={handleSubmit} data={data} isPremium={isPremium} />;
       case 2:
         return <ProfileInformation onSubmit={handleSubmit} data={data} />;
       case 3:
@@ -76,7 +91,7 @@ export default function Page() {
       case 6:
         return <ReviewPublish onSubmit={handleSubmit} data={data} />;
       default:
-        return <ChooseTemplate onSubmit={handleSubmit} data={data} />;
+        return <ChooseTemplate onSubmit={handleSubmit} data={data} isPremium={isPremium} />;
     }
   };
 
@@ -147,11 +162,22 @@ export default function Page() {
         />
 
         <button
-          onClick={() => fileInputRef.current?.click()}
+          onClick={() => {
+            if (!isPremium) {
+              toast.error("Autofill from Resume (AI) is a Premium feature. Please upgrade to unlock.");
+              router.push("/dashboard/upgrade");
+              return;
+            }
+            fileInputRef.current?.click();
+          }}
           disabled={parsing}
           className={`flex items-center gap-2 border border-purple-300 px-4 py-2 rounded-full text-xs font-semibold text-purple-700 bg-purple-50/50 hover:bg-purple-100 hover:shadow-md transition-all duration-200 ${parsing ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
         >
-          <Zap size={14} className={parsing ? "animate-spin text-purple-500" : "text-purple-500"} />
+          {isPremium ? (
+            <Zap size={14} className={parsing ? "animate-spin text-purple-500" : "text-purple-500"} />
+          ) : (
+            <Crown size={14} className="text-amber-500 fill-amber-500" />
+          )}
           {parsing ? "Autofilling with AI..." : "Autofill from Resume (AI)"}
         </button>
       </div>

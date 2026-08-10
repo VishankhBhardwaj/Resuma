@@ -229,6 +229,10 @@ TAVUS_REPLICA_ID=your_replica_id
    - `ai_data` (text)
    - `template` (text)
    - `created_at` (timestamp)
+5. Create a table named `users` with columns:
+   - `clerk_user_id` (text, primary key)
+   - `analyze_count` (integer, default: 0)
+   - `created_at` (timestamp)
 
 #### **Google Gemini AI:**
 1. Visit [Google AI Studio](https://ai.google.dev/)

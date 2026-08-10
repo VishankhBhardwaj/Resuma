@@ -9,6 +9,7 @@ import {
   PlusCircle,
   FolderKanban,
   Phone,
+  CreditCard,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -32,6 +33,7 @@ const items = [
   { title: "Analyze Resume", url: "/dashboard/analyzeresumes", icon: FileScan },
   { title: "My Portfolios", url: "/dashboard/myportfolios", icon: FolderKanban },
   { title: "Create Portfolio", url: "/dashboard/createportfolio", icon: PlusCircle },
+  { title: "Upgrade Plan", url: "/dashboard/upgrade", icon: CreditCard },
   { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ];
 

@@ -7,8 +7,13 @@ import Button from "@/components/ui/FancyButton";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import TextView from "../components/ui/Text"
 import { useRouter } from "next/navigation";
+import { useEffect } from 'react';
+import axios from "axios";
 export default  function Home() {
   const router = useRouter();
+  useEffect(()=>{
+    axios.post("/api/usersync");
+},[]);
   return (
     <>
       <div className="parent flex flex-col ">
