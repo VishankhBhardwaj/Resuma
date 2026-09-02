@@ -55,7 +55,6 @@ export async function GET() {
 
   if (dbUser) {
     try {
-      // Get the latest active subscription for this user UUID
       const { data: activeSub, error: subErr } = await supabase
         .from("subscriptions")
         .select("razorpay_subscription_id")

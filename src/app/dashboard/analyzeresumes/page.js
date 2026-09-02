@@ -71,6 +71,11 @@ export default function Page() {
       let extractedText = text;
       if (resumeUpload) {
         extractedText = await pdfToText(file);
+        if(extractedText.trim().length<80){
+          toast.error("Uploaded file is not readable. Please try again with another file.");
+          setLoading(false);
+          return;
+        } 
         setText(extractedText);
       }
       
