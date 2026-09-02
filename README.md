@@ -266,7 +266,7 @@ cd backend
 uvicorn main:app --reload --port 8000
 ```
 
-The backend API will be available at `http://127.0.0.1:8000`
+The backend API will be available at `NEXT_PUBLIC_BACKEND_URL`
 
 #### Start Frontend Development Server
 

@@ -47,7 +47,7 @@ export default function Page() {
     formData.append("user_id", user.id);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/ai_agent",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/ai_agent`,
         formData,
       );
       if (response) {
@@ -71,7 +71,7 @@ export default function Page() {
       formData.append("file", file);
       formData.append("user_id",user.id);
       const response = await axios.post(
-        "http://127.0.0.1:8000/file_upload",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/file_upload`,
         formData,
       );
       if (response.data.message === "Embeddings created") {
