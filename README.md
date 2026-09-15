@@ -1,499 +1,521 @@
 # Resuma 🚀
 
+<div align="center">
+
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![Next.js](https://img.shields.io/badge/Next.js-15.2.8-black)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688)](https://fastapi.tiangolo.com/)
-[![Python](https://img.shields.io/badge/Python-3.8+-blue)](https://www.python.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.2.8-black?logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-18.2.0-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
+[![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![LangChain](https://img.shields.io/badge/LangChain-Enabled-1C3C3C?logo=langchain)](https://python.langchain.com/)
+[![Pinecone](https://img.shields.io/badge/Pinecone-Vector_DB-000000)](https://www.pinecone.io/)
+[![Google Gemini](https://img.shields.io/badge/Google_Gemini-AI_Engine-4285F4?logo=google)](https://ai.google.dev/)
+[![Vapi AI](https://img.shields.io/badge/Vapi_AI-Voice_Agent-7C3AED)](https://vapi.ai/)
+[![Razorpay](https://img.shields.io/badge/Razorpay-Subscription_Billing-0C2340?logo=razorpay)](https://razorpay.com/)
+[![Clerk](https://img.shields.io/badge/Clerk-Auth-6C47FF?logo=clerk)](https://clerk.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?logo=supabase)](https://supabase.com/)
 
-**Transform Your Career Story with AI-Powered Intelligence**
+**The Complete AI-Powered Career Accelerator & Portfolio Ecosystem**
 
-Resuma is a cutting-edge dual-stack web application that leverages advanced AI to analyze resumes, generate stunning portfolios, and provide personalized career insights. Built with Next.js frontend and FastAPI backend, powered by LangChain RAG system and Google Gemini AI, Resuma helps professionals stand out in today's competitive job market.
+*Analyze resumes with ATS intelligence, practice real-time conversational and voice mock interviews with live AI evaluators, and generate stunning designer web portfolios in seconds.*
+
+[Key Features](#-key-features) • [System Architecture](#️-system-architecture) • [Tech Stack](#-tech-stack) • [Live Demo & Routes](#-application-modules) • [Database Schema](#-database-schema-supabase-sql) • [Getting Started](#-getting-started) • [API Reference](#-api-endpoints)
+
+---
 
 ![Resuma Banner](./public/img1.jpg.png)
 
-## ✨ Features
+</div>
 
-### 🧠 AI-Powered Interview Preparation
-- **RAG-Based Resume Analysis**: Upload your resume and get intelligent answers about your skills, projects, and experience
-- **Conversational AI Assistant**: Chat with an AI that understands your resume context using LangChain and vector embeddings
-- **Smart Question Answering**: Get accurate, context-aware responses based on your actual resume content
-- **Interview Practice**: Prepare for interviews with AI-generated questions tailored to your background
-- **Session Management**: Upload, analyze, and manage multiple resume sessions
+## 🌟 Overview
 
-### 🎨 Portfolio Generation
-- **AI-Enhanced Content**: Automatically refine and elaborate your portfolio content while maintaining factual accuracy
-- **6 Premium Templates**: Choose from professionally designed templates:
-  - **EmeraldShine**: Modern and vibrant design
-  - **MidnightBlue**: Professional dark theme
-  - **NeonFusion**: Bold and dynamic layout
-  - **OceanBreeze**: Clean and calming aesthetic
-  - **RoyalPurple**: Elegant and sophisticated
-  - **SunsetGlow**: Warm and inviting design
-- **Responsive Design**: Portfolios that look stunning on all devices
-- **Public Sharing**: Share your portfolio with a unique URL (`/p/[portfolioId]`)
-- **Database Storage**: All portfolios saved to Supabase for easy management
+**Resuma** is an all-in-one AI career enablement platform designed to bridge the gap between job seekers and hiring standards. Combining state-of-the-art Generative AI, Retrieval-Augmented Generation (RAG), real-time speech telephony, and interactive portfolio generation, Resuma empowers candidates to optimize their resumes, practice realistic behavioral and technical interviews, and publish production-grade personal portfolios with a single click.
 
-### 🚀 Career Insights
-- **Resume-Based Recommendations**: AI-driven suggestions based on your actual experience
-- **Skill Gap Analysis**: Identify areas for professional development
-- **Project Highlighting**: Showcase your best work effectively
-- **Professional Tone**: Content refined to sound confident and polished
+---
 
-### 📊 Dashboard Features
-- **Portfolio Management**: Create, view, and delete your portfolios
-- **Resume Analysis**: Upload and analyze multiple resumes
-- **Interview Prep Hub**: Access your AI interview assistant
-- **Settings & Customization**: Personalize your experience
-- **User Authentication**: Secure access with Clerk authentication
+## ✨ Key Features
 
-## 🏗️ Architecture
+### 🎙️ 1. Real-Time AI Voice Mock Interview (Vapi AI + Gemini)
+- **Interactive Vocal Practice**: Conduct live, low-latency audio interviews with an AI technical recruiter powered by **Vapi AI**.
+- **Live Decibel Wave Visualizer**: Dynamic real-time audio frequencies with microphone mute/unmute and instant call management.
+- **Real-Time Speech Transcription**: Streaming speech-to-text logging showing candidate and interviewer dialogue in real-time.
+- **Automated Diagnostic Scorecard**: After ending the call, **Google Gemini** evaluates the transcript and produces:
+  - **Overall Rating**: Score out of 10 with star-rated summary.
+  - **Communication Skills**: Fluency, clarity, pacing, and filler-word analysis.
+  - **Technical Knowledge**: Depth, accuracy, and justification of technology choices.
+  - **Project Explanation**: Architectural clarity, problem-solving narrative, and technical grounding.
+  - **Strengths & Areas of Improvement**: Bulleted breakdowns of what went well and what needs work.
+  - **Action Plan**: Step-by-step guidance to master upcoming real-world interviews.
 
-Resuma is built as a **dual-stack application**:
+---
 
-### Frontend (Next.js)
-- Modern React-based UI with App Router
-- Server-side rendering and API routes
-- Real-time portfolio preview
-- Responsive design system
+### 🧠 2. Conversational RAG Resume Assistant (Pinecone + Groq LLaMA 3.3)
+- **Multi-Tenant Vector Isolation**: Resumes are vectorized and stored in Pinecone with strict user namespace isolation (`namespace=user_id`).
+- **Semantic Retrieval**: Queries retrieve the top relevant semantic chunks using HuggingFace's `all-MiniLM-L6-v2` embeddings.
+- **Ultra-Fast LLM Inference**: Powered by **Groq** running `llama-3.3-70b-versatile` for sub-second, highly contextual responses.
+- **LangChain Tool-Calling Agent**: Incorporates smart routing between the resume retriever and **DuckDuckGo Search** for external career questions.
+- **Chat History & Contextual Continuity**: Retains conversation history using `RunnableWithMessageHistory` across multiple questions.
 
-### Backend (FastAPI)
-- RESTful API with Python
-- LangChain-based RAG (Retrieval-Augmented Generation) system
-- Vector embeddings with Pinecone
-- PDF processing and document parsing
-- AI agent with tool calling capabilities
+---
+
+### 📄 3. ATS Resume Analyzer & Keyword Matcher
+- **Dual Ingestion Options**: Upload PDF resumes directly (processed client-side via `react-pdftotext`) or paste raw resume text.
+- **Role & Tech-Stack Matching**: Input desired target job title, job description, and custom required skill tags.
+- **Comprehensive ATS Scoring**: Generates an overall ATS score, identified strengths, missing keywords, and role-fit critique.
+- **Usage Tracking**: Monitors and increments analysis usage quotas in Supabase.
+
+---
+
+### 🎨 4. AI Portfolio Builder & 6 Designer Showcase Templates
+- **Zero-Code Builder**: Form-driven portfolio generator capturing contact details, social links, bio, work history, projects, and skills.
+- **Gemini Pro Auto-Refinement**: AI elaborates brief bullet points into professional, metric-oriented descriptions while strictly adhering to factual accuracy.
+- **6 Handcrafted Designer Themes**:
+  1. 💎 **EmeraldShine**: Modern, vibrant green gradients with glassmorphic cards.
+  2. 🌌 **MidnightBlue**: Deep cosmic navy dark theme tailored for engineers and architects.
+  3. ⚡ **NeonFusion**: High-contrast cyberpunk cyber-glow aesthetic for creative developers.
+  4. 🌊 **OceanBreeze**: Clean, minimalist oceanic palette with smooth layout accents.
+  5. 👑 **RoyalPurple**: Elegant, sophisticated purple-to-indigo royal theme.
+  6. 🌅 **SunsetGlow**: Warm amber-to-rose sunset theme with polished micro-interactions.
+- **Public Shareable URLs**: Instantly published at `/p/[portfolioId]` with view tracking and responsive presentation across desktop, tablet, and mobile.
+- **Instant Client-Side Export**: Integrated with `html2pdf.js` for exporting clean offline portfolio copies.
+
+---
+
+### 💳 5. Monetization & Subscription Billing (Razorpay)
+- **Flexible Plans**:
+  - **Starter Plan (Free)**: 1 Resume Analysis, 1 Public Portfolio, Standard text prep.
+  - **Pro Career Plan (₹199/month)**: Unlimited resume analyses, unlimited portfolio deployments, access to all 6 premium designer templates, full access to the AI Voice Coach (Vapi AI), and comprehensive Gemini performance scorecards.
+- **Secure Payments**: Integrated with Razorpay Recurring Subscriptions (`create-order`, client checkout modal, `verify`, and self-serve `cancel`).
+
+---
+
+### 📊 6. Analytics Dashboard & User Synchronization
+- **Live Metrics**: Total portfolios deployed, cumulative public portfolio views, and total resume analyses performed.
+- **User Onboarding & Clerk Sync**: Automatic user provisioning in Supabase PostgreSQL (`users` table) upon sign-in with Clerk metadata.
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+    subgraph Client["Next.js 15 Client Layer (React 18 + Tailwind v4)"]
+        UI[Landing Page & Dashboard]
+        VP[Voice Prep Studio]
+        IP[Text Interview Prep]
+        AR[Resume ATS Analyzer]
+        CP[Portfolio Builder & Templates]
+        UP[Upgrade & Billing]
+    end
+
+    subgraph AuthSecurity["Auth & Security"]
+        Clerk[Clerk Authentication]
+        SupabaseRLS[Supabase RLS & PostgreSQL]
+    end
+
+    subgraph BackendAPI["FastAPI Python Microservice (:8000)"]
+        FU["/file_upload\n(PyPDF + Chunker)"]
+        AI["/ai_agent\n(LangChain Tool Agent)"]
+        PineconeClient["Pinecone Vector Store\n(User Namespace Isolation)"]
+    end
+
+    subgraph ExternalAI["External AI & Cloud Services"]
+        Gemini[Google Gemini 2.5 Flash / Pro]
+        Vapi[Vapi AI Voice Telephony]
+        Groq[Groq LLaMA-3.3-70b]
+        HF[HuggingFace MiniLM Embeddings]
+        RazorpayGateway[Razorpay Payment Gateway]
+    end
+
+    %% Client Auth Flows
+    UI <--> Clerk
+    UI <--> SupabaseRLS
+
+    %% Voice prep flows
+    VP <-->|WebRTC Voice Stream| Vapi
+    VP -->|Transcript Evaluation| Gemini
+
+    %% Interview RAG flows
+    IP -->|Upload Resume PDF| FU
+    FU -->|Generate Embeddings| HF
+    HF -->|Store Vectors with user_id namespace| PineconeClient
+    IP -->|Ask Query| AI
+    AI <--> PineconeClient
+    AI <--> Groq
+
+    %% Portfolio & Resume Analysis
+    AR -->|Resume Optimization Prompt| Gemini
+    CP -->|Portfolio Elaboration| Gemini
+    CP -->|Save & Fetch Portfolio Data| SupabaseRLS
+    UP <-->|Subscriptions & Verification| RazorpayGateway
+```
+
+---
 
 ## 🛠️ Tech Stack
 
-### Frontend Technologies
-- **Framework**: [Next.js 15.2.8](https://nextjs.org/) - React framework with App Router
-- **UI Library**: [React 18.2.0](https://reactjs.org/)
-- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) with custom configurations
-- **Animations**: 
-  - [Framer Motion 12.23.24](https://www.framer.com/motion/) - Advanced animations
-  - [Animate.css 4.1.1](https://animate.style/) - CSS animations
-- **Icons**: 
-  - [Lucide React](https://lucide.dev/) - Modern icon library
-  - [Tabler Icons React](https://tabler-icons.io/) - Additional icon set
-- **UI Components**: 
-  - [Radix UI](https://www.radix-ui.com/) - Accessible component primitives
-  - Custom components with glassmorphism and modern design patterns
-- **HTTP Client**: [Axios 1.13.2](https://axios-http.com/)
-- **PDF Processing**: 
-  - [pdfjs-dist 5.4.530](https://mozilla.github.io/pdf.js/)
-  - [react-pdf 10.3.0](https://github.com/wojtekmaj/react-pdf)
-- **File Upload**: [react-dropzone 14.3.8](https://react-dropzone.js.org/)
+### Frontend Ecosystem
+| Technology | Version | Purpose |
+|:---|:---|:---|
+| **[Next.js](https://nextjs.org/)** | `15.2.8` | React framework with App Router, Server Components & API routes |
+| **[React](https://reactjs.org/)** | `18.2.0` | Declarative UI component library |
+| **[Tailwind CSS](https://tailwindcss.com/)** | `^4.0.0` | Modern utility-first CSS styling engine |
+| **[@vapi-ai/web](https://vapi.ai/)** | `^2.6.1` | Real-time WebRTC audio client for vocal AI interviews |
+| **[Framer Motion](https://www.framer.com/motion/)** | `^12.23.24` | Production-grade UI animations and physics-based transitions |
+| **[@google/genai](https://ai.google.dev/)** | `^1.34.0` | Official Google Gemini SDK for client/server AI content generation |
+| **[@clerk/nextjs](https://clerk.com/)** | `6.35.5` | End-to-end authentication, session security, and user profiles |
+| **[@supabase/supabase-js](https://supabase.com/)** | `^2.89.0` | PostgreSQL database client with server and browser adapters |
+| **[Razorpay](https://razorpay.com/)** | `^2.9.8` | Payment gateway integration for recurring subscriptions |
+| **[html2pdf.js](https://github.com/eKoopmans/html2pdf.js)** | `^0.14.0` | Client-side DOM-to-PDF rendering and export |
+| **[react-pdftotext](https://www.npmjs.com/package/react-pdftotext)**| `^1.3.4` | In-browser PDF text extraction without heavy native bindings |
+| **[Sonner](https://sonner.emilkowal.ski/)** | `^2.0.7` | Minimalist toast notifications |
+| **[Lenis](https://lenis.darkroom.engineering/)** | `^1.3.25` | Smooth page momentum scrolling |
+| **[Lucide React](https://lucide.dev/)** | `^0.555.0` | Clean, modern SVG icon library |
 
-### Backend Technologies
-- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
-- **AI/LLM**: 
-  - [LangChain](https://python.langchain.com/) - LLM application framework
-  - [LangChain Community](https://python.langchain.com/docs/integrations/platforms/) - Community integrations
-  - [Groq](https://groq.com/) - LLM inference (llama-3.3-70b-versatile model)
-- **Vector Database**: [Pinecone](https://www.pinecone.io/) - Vector storage and retrieval
-- **Embeddings**: [HuggingFace](https://huggingface.co/) - all-MiniLM-L6-v2 model
-- **Document Processing**: 
-  - [PyPDF](https://pypdf.readthedocs.io/) - PDF parsing
-  - [PyMuPDF](https://pymupdf.readthedocs.io/) - Advanced PDF processing
-- **Text Splitting**: LangChain Text Splitters - Intelligent document chunking
-- **Search Tools**: [DuckDuckGo Search](https://pypi.org/project/duckduckgo-search/) - Web search integration
+### Backend Microservice (FastAPI & RAG Pipeline)
+| Technology | Description |
+|:---|:---|
+| **[FastAPI](https://fastapi.tiangolo.com/)** | High-performance asynchronous Python web framework |
+| **[Uvicorn](https://www.uvicorn.org/)** | ASGI server implementation for lightning-fast request handling |
+| **[LangChain](https://python.langchain.com/)** | Framework for developing LLM applications and agent tool calling |
+| **[LangChain Groq](https://github.com/langchain-ai/langchain-groq)** | High-throughput LLM inference for `llama-3.3-70b-versatile` |
+| **[LangChain Pinecone](https://python.langchain.com/docs/integrations/vectorstores/pinecone/)** | Vector storage and similarity search with namespace isolation |
+| **[HuggingFace Hub](https://huggingface.co/)** | Embeddings generation (`sentence-transformers/all-MiniLM-L6-v2`) |
+| **[PyPDF](https://pypdf.readthedocs.io/)** | Server-side PDF document ingestion and text extraction |
+| **[DuckDuckGo Search (`ddgs`)](https://pypi.org/project/duckduckgo-search/)** | Fallback search tool for general market & career questions |
 
-### Services & Infrastructure
-- **Authentication**: [Clerk 6.35.5](https://clerk.com/) - Complete user management
-- **Database**: [Supabase](https://supabase.com/) - PostgreSQL database with real-time capabilities
-- **AI Engine**: [Google Gemini AI](https://ai.google.dev/) - Portfolio content generation and refinement
-- **CORS**: FastAPI CORS middleware for frontend-backend communication
+---
 
-### Development Tools
-- **Languages**: JavaScript/JSX, TypeScript, Python 3.8+
-- **Linting**: ESLint with Next.js configuration
-- **Compiler**: Babel React Compiler for optimized builds
-- **Styling Tools**: PostCSS with Tailwind CSS
-- **Environment**: python-dotenv for configuration management
+## 📁 Repository Structure
 
-## 📋 Prerequisites
+```
+Resuma/
+├── backend/                             # Python FastAPI RAG Microservice
+│   ├── uploads/                         # Temporary PDF ingestion directory
+│   ├── .env                             # Backend environment variables
+│   ├── llm.py                           # Groq LLM & LangChain Conversational Retrieval Chain
+│   ├── main.py                          # FastAPI endpoints, CORS, & Agent Executor
+│   ├── rag.py                           # Pinecone vector store & user namespace management
+│   ├── requirements.txt                 # Python dependencies
+│   ├── runtime.txt                      # Target Python runtime version
+│   ├── store.py                         # In-memory session store helper
+│   └── tools.py                         # Custom LangChain tools with chat history
+│
+└── resuma/                              # Next.js 15 Full-Stack Web Application
+    ├── public/                          # Static assets, banners, icons
+    ├── src/
+    │   ├── app/                         # Next.js App Router
+    │   │   ├── api/                     # Serverless API routes
+    │   │   │   ├── ai/portfolio/        # Gemini portfolio auto-refinement
+    │   │   │   ├── analyze-count/       # Resume analyze usage increment
+    │   │   │   ├── dashboard-stats/     # Aggregated user stats (views, counts)
+    │   │   │   ├── payment/             # Razorpay create-order, verify, cancel
+    │   │   │   ├── portfolios/          # Portfolio CRUD endpoints
+    │   │   │   ├── resume/              # Resume ATS analysis route
+    │   │   │   ├── user/                # User profile & subscription status
+    │   │   │   ├── usersync/            # Clerk webhook database sync
+    │   │   │   └── voiceprep/getFeedback# Gemini voice transcript performance review
+    │   │   ├── dashboard/               # Authenticated Dashboard Pages
+    │   │   │   ├── analyzeresumes/      # ATS resume optimization page
+    │   │   │   ├── createportfolio/     # Step-by-step portfolio generator
+    │   │   │   ├── interviewprep/       # Conversational RAG interview assistant
+    │   │   │   ├── myportfolios/        # Manage, edit, view, delete portfolios
+    │   │   │   ├── settings/            # User account settings
+    │   │   │   ├── upgrade/             # Pricing & Razorpay subscription upgrade
+    │   │   │   ├── voiceprep/           # Real-time Vapi AI voice interview coach
+    │   │   │   ├── layout.js            # Dashboard sidebar & topbar layout
+    │   │   │   └── page.js              # Dashboard metrics & quick actions
+    │   │   ├── p/[portfolioId]/         # Publicly shareable dynamic portfolio page
+    │   │   ├── globals.css              # Global styles & Tailwind CSS v4 imports
+    │   │   ├── layout.js                # Root layout wrapped in ClerkProvider
+    │   │   └── page.js                  # Modern landing page with animations
+    │   ├── components/
+    │   │   ├── template/                # 6 Handcrafted Portfolio Templates
+    │   │   │   ├── EmeraldShine.jsx     # Modern emerald & mint gradient
+    │   │   │   ├── MidnightBlue.jsx     # Dark cybernetic navy
+    │   │   │   ├── NeonFusion.jsx       # Vibrant high-contrast neon
+    │   │   │   ├── OceanBreeze.jsx      # Clean minimal ocean blue
+    │   │   │   ├── RoyalPurple.jsx      # Sophisticated imperial purple
+    │   │   │   └── SunsetGlow.jsx       # Warm sunset amber & rose
+    │   │   └── ui/                      # Reusable UI primitives (buttons, dialogs, sidebar)
+    │   ├── hooks/                       # Custom React hooks
+    │   └── lib/                         # Utility libraries
+    │       ├── gemini.js                # Gemini API integration helper
+    │       ├── razorpay.js              # Razorpay server instance
+    │       └── supabase/                # Supabase client & server singletons
+    ├── .env.local                       # Frontend environment variables
+    ├── components.json                  # UI component configuration
+    ├── package.json                     # Frontend dependencies & scripts
+    └── tailwind.config.js               # Tailwind design system configuration
+```
 
-Before you begin, ensure you have the following installed:
+---
 
-### For Frontend:
-- **Node.js** (v18 or higher)
-- **npm** or **yarn** package manager
+## 🗄️ Database Schema (Supabase SQL)
 
-### For Backend:
-- **Python** (3.8 or higher)
-- **pip** package manager
-- **Virtual environment** (recommended)
+Run the following SQL migration in your **Supabase SQL Editor** to initialize all required tables, relations, and indexes:
 
-### General:
-- **Git** for version control
+```sql
+-- 1. Users Table
+CREATE TABLE IF NOT EXISTS public.users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    clerk_user_id TEXT UNIQUE NOT NULL,
+    "fullName" TEXT,
+    email TEXT,
+    avatar_url TEXT,
+    is_premium BOOLEAN DEFAULT FALSE,
+    analyze_count INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 2. Portfolios Table
+CREATE TABLE IF NOT EXISTS public."Portfolios" (
+    id TEXT PRIMARY KEY,
+    clerk_user_id TEXT NOT NULL,
+    form_data JSONB NOT NULL,
+    ai_data JSONB,
+    template TEXT NOT NULL DEFAULT 'EmeraldShine',
+    views INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 3. Subscriptions Table
+CREATE TABLE IF NOT EXISTS public.subscriptions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+    razorpay_subscription_id TEXT NOT NULL,
+    plan_id TEXT NOT NULL,
+    plan_name TEXT DEFAULT 'PREMIUM_MONTHLY',
+    status TEXT DEFAULT 'PENDING',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Performance Indexes
+CREATE INDEX IF NOT EXISTS idx_users_clerk_id ON public.users(clerk_user_id);
+CREATE INDEX IF NOT EXISTS idx_portfolios_clerk_user_id ON public."Portfolios"(clerk_user_id);
+CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON public.subscriptions(user_id);
+```
+
+---
 
 ## 🚀 Getting Started
 
-### 1. Clone the Repository
+### 📋 Prerequisites
+- **Node.js**: `v18.17.0` or higher
+- **Python**: `v3.10` or higher
+- **Package Managers**: `npm` (or `yarn` / `pnpm`) and `pip`
+- **Git**: For version control
 
+---
+
+### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/VishankhBhardwaj/Resuma.git
 cd Resuma
 ```
 
-### 2. Frontend Setup
+---
 
-#### Install Frontend Dependencies
+### 2️⃣ Backend Setup (FastAPI RAG Service)
 
-```bash
-cd resuma
-npm install
-# or
-yarn install
-```
+1. Navigate to the `backend` folder:
+   ```bash
+   cd backend
+   ```
 
-#### Frontend Environment Setup
+2. Create and activate a Python virtual environment:
+   ```bash
+   # Windows (PowerShell):
+   python -m venv venv
+   .\venv\Scripts\activate
 
-Create a `.env.local` file in the `resuma` directory:
+   # macOS / Linux:
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
 
-```env
-# Clerk Authentication
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-CLERK_SECRET_KEY=your_clerk_secret_key
+3. Install required Python packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-# Supabase Database
-SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-DATABASE_PASSWORD=your_database_password
+4. Configure backend environment variables:
+   Create a `.env` file in the `backend/` directory:
+   ```env
+   # Groq LLM API Key (https://console.groq.com)
+   GROQ_API_KEY="your_groq_api_key_here"
 
-# Google Gemini AI
-GEMINI_API_KEY=your_gemini_api_key
-```
+   # HuggingFace Token (https://huggingface.co/settings/tokens)
+   HF_TOKEN="your_huggingface_token_here"
 
-### 3. Backend Setup
+   # Pinecone Vector Database (https://www.pinecone.io)
+   PINECONE_API_KEY="your_pinecone_api_key_here"
 
-#### Create Virtual Environment
+   # Optional LangChain Observability
+   LANGCHAIN_API_KEY="your_langchain_api_key"
+   LANGCHAIN_PROJECT="Resuma"
+   ```
 
-```bash
-cd ../backend
-python -m venv venv
+   > [!NOTE]
+   > Ensure you have created an index named **`resuma`** in Pinecone with **`384` dimensions** and **Cosine** metric (matching `sentence-transformers/all-MiniLM-L6-v2`).
 
-# Activate virtual environment
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
-```
+5. Start the backend development server:
+   ```bash
+   uvicorn main:app --reload --port 8000
+   ```
+   The backend API will be live at `http://localhost:8000` (Swagger docs at `http://localhost:8000/docs`).
 
-#### Install Backend Dependencies
+---
 
-```bash
-pip install -r requirements.txt
-```
+### 3️⃣ Frontend Setup (Next.js 15)
 
-#### Backend Environment Setup
+1. Open a new terminal and navigate to the `resuma` directory:
+   ```bash
+   cd resuma
+   ```
 
-Create a `.env` file in the `backend` directory:
+2. Install Node dependencies:
+   ```bash
+   npm install
+   ```
 
-```env
-# Groq LLM API
-GROQ_API_KEY=your_groq_api_key
+3. Configure frontend environment variables:
+   Create a `.env.local` file in the `resuma/` directory:
+   ```env
+   # Clerk Authentication (https://clerk.com)
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_your_clerk_key
+   CLERK_SECRET_KEY=sk_test_your_clerk_secret
 
-# HuggingFace Token
-HF_TOKEN=your_huggingface_token
+   # Supabase Database (https://supabase.com)
+   SUPABASE_URL=https://your-project.supabase.co
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+   DATABASE_PASSWORD=your_database_password
 
-# LangChain (Optional - for tracing)
-LANGCHAIN_API_KEY=your_langchain_api_key
-LANGCHAIN_PROJECT=Resuma
+   # Google Gemini AI (https://ai.google.dev/)
+   GEMINI_API_KEY=your_gemini_api_key
 
-# Pinecone Vector Database
-PINECONE_API_KEY=your_pinecone_api_key
+   # Vapi AI Voice Agent (https://vapi.ai)
+   NEXT_PUBLIC_VAPI_PUBLIC_KEY=your_vapi_public_key
+   NEXT_PUBLIC_VAPI_ASSISTANT_ID=your_vapi_assistant_id
 
-# Tavus (Optional - for video generation)
-TAVUS_API_KEY=your_tavus_api_key
-TAVUS_REPLICA_ID=your_replica_id
-```
+   # Razorpay Payment Gateway (https://dashboard.razorpay.com)
+   RAZORPAY_KEY_ID=rzp_test_your_key_id
+   RAZORPAY_SECRET=your_razorpay_secret
+   RAZORPAY_PLAN_ID=plan_your_plan_id
 
-### 4. Getting API Keys
+   # Python Backend URL (Local or Deployed)
+   NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+   ```
 
-#### **Clerk Authentication:**
-1. Sign up at [clerk.com](https://clerk.com/)
-2. Create a new application
-3. Copy the publishable and secret keys from the dashboard
+4. Run the frontend development server:
+   ```bash
+   npm run dev
+   ```
+   Open `http://localhost:3000` in your browser to access Resuma!
 
-#### **Supabase:**
-1. Create an account at [supabase.com](https://supabase.com/)
-2. Create a new project
-3. Get your URL and keys from Project Settings → API
-4. Create a table named `Portfolios` with columns:
-   - `id` (text, primary key)
-   - `clerk_user_id` (text)
-   - `form_data` (jsonb)
-   - `ai_data` (text)
-   - `template` (text)
-   - `created_at` (timestamp)
-5. Create a table named `users` with columns:
-   - `clerk_user_id` (text, primary key)
-   - `analyze_count` (integer, default: 0)
-   - `created_at` (timestamp)
-
-#### **Google Gemini AI:**
-1. Visit [Google AI Studio](https://ai.google.dev/)
-2. Create an API key
-3. Copy the key to your environment variables
-
-#### **Groq:**
-1. Sign up at [groq.com](https://groq.com/)
-2. Generate an API key
-3. Add to backend `.env` file
-
-#### **Pinecone:**
-1. Create account at [pinecone.io](https://www.pinecone.io/)
-2. Create a new index named `resuma`
-3. Set dimensions to `384` (for all-MiniLM-L6-v2 embeddings)
-4. Copy your API key
-
-#### **HuggingFace:**
-1. Sign up at [huggingface.co](https://huggingface.co/)
-2. Go to Settings → Access Tokens
-3. Create a new token
-4. Copy to backend `.env` file
-
-### 5. Run the Application
-
-#### Start Backend Server
-
-```bash
-cd backend
-# Make sure virtual environment is activated
-uvicorn main:app --reload --port 8000
-```
-
-The backend API will be available at `NEXT_PUBLIC_BACKEND_URL`
-
-#### Start Frontend Development Server
-
-```bash
-cd resuma
-npm run dev
-# or
-yarn dev
-```
-
-The frontend will be available at `http://localhost:3000`
-
-### 6. Build for Production
-
-#### Frontend Production Build
-
-```bash
-cd resuma
-npm run build
-npm start
-# or
-yarn build
-yarn start
-```
-
-#### Backend Production Deployment
-
-```bash
-cd backend
-uvicorn main:app --host 0.0.0.0 --port 8000
-```
-
-## 📁 Project Structure
-
-```
-Resuma/
-├── backend/                    # FastAPI Backend
-│   ├── main.py                # FastAPI application & endpoints
-│   ├── llm.py                 # LLM configuration & retrieval chain
-│   ├── rag.py                 # RAG system (embeddings, vector store)
-│   ├── tools.py               # LangChain tools (interview prep)
-│   ├── video_tool.py          # Video generation tool (commented)
-│   ├── store.py               # Global state management
-│   ├── requirements.txt       # Python dependencies
-│   ├── .env                   # Backend environment variables
-│   ├── uploads/               # Resume upload directory
-│   └── venv/                  # Python virtual environment
-│
-└── resuma/                    # Next.js Frontend
-    ├── public/                # Static assets
-    ├── src/
-    │   ├── app/              # Next.js App Router
-    │   │   ├── api/          # API routes
-    │   │   │   ├── ai/       # AI portfolio generation
-    │   │   │   ├── portfolios/ # Portfolio CRUD
-    │   │   │   ├── resume/   # Resume processing
-    │   │   │   └── user/     # User management
-    │   │   ├── dashboard/    # Dashboard pages
-    │   │   │   ├── analyzeresumes/   # Resume analysis
-    │   │   │   ├── createportfolio/  # Portfolio creation
-    │   │   │   ├── interviewprep/    # AI interview assistant
-    │   │   │   ├── myportfolios/     # Portfolio management
-    │   │   │   └── settings/         # User settings
-    │   │   ├── p/            # Public portfolio pages
-    │   │   ├── layout.js     # Root layout with Clerk
-    │   │   ├── page.js       # Landing page
-    │   │   └── globals.css   # Global styles
-    │   ├── components/       # React components
-    │   │   ├── template/     # 6 Portfolio templates
-    │   │   │   ├── EmeraldShine.jsx
-    │   │   │   ├── MidnightBlue.jsx
-    │   │   │   ├── NeonFusion.jsx
-    │   │   │   ├── OceanBreeze.jsx
-    │   │   │   ├── RoyalPurple.jsx
-    │   │   │   └── SunsetGlow.jsx
-    │   │   └── ui/           # Reusable UI components
-    │   ├── hooks/            # Custom React hooks
-    │   ├── lib/              # Utility functions
-    │   │   ├── gemini.js     # Gemini AI integration
-    │   │   └── supabase/     # Supabase client
-    │   └── middleware.ts     # Next.js middleware
-    ├── .env.local            # Frontend environment variables
-    ├── package.json          # Frontend dependencies
-    ├── tailwind.config.js    # Tailwind configuration
-    └── next.config.mjs       # Next.js configuration
-```
-
-## 🎯 How It Works
-
-### 1. **Upload Resume (Interview Prep)**
-- Navigate to Interview Prep in the dashboard
-- Upload your resume in PDF format
-- Backend processes the PDF using PyPDF and PyMuPDF
-- Document is split into chunks using RecursiveCharacterTextSplitter
-- Chunks are embedded using HuggingFace all-MiniLM-L6-v2 model
-- Embeddings stored in Pinecone vector database
-
-### 2. **AI Processing (RAG System)**
-- User asks a question about their resume
-- LangChain agent determines if it needs the interview_prep_tool
-- Question is contextualized using chat history
-- Relevant resume chunks retrieved from Pinecone
-- Groq LLM (llama-3.3-70b-versatile) generates answer using retrieved context
-- Response returned with conversation history maintained
-
-### 3. **Portfolio Creation**
-- Fill out portfolio form with your information
-- Choose from 6 premium templates
-- Data sent to Google Gemini AI for content refinement
-- AI elaborates descriptions while maintaining factual accuracy
-- Refined portfolio saved to Supabase
-- Portfolio accessible via unique URL
-
-### 4. **Portfolio Sharing**
-- Each portfolio gets a unique ID
-- Access via `/p/[portfolioId]` route
-- Public portfolios load data from Supabase
-- Rendered using selected template component
-- Fully responsive and shareable
-
-## 🎨 Key Features in Detail
-
-### RAG-Based Interview Preparation
-- **Vector Search**: Semantic search over resume content using Pinecone
-- **Context-Aware Responses**: LLM answers based on actual resume data
-- **Chat History**: Maintains conversation context across questions
-- **Tool Calling**: LangChain agent intelligently routes queries to appropriate tools
-- **Session Management**: Upload/delete resume sessions independently
-
-### AI Portfolio Refinement
-- **Structure Preservation**: Maintains exact JSON structure for template compatibility
-- **Content Enhancement**: Improves grammar, clarity, and professionalism
-- **Fact Safety**: Never adds fake information or exaggerates claims
-- **Professional Tone**: Converts casual language to portfolio-ready content
-- **Elaboration**: Expands brief descriptions while staying truthful
-
-### Modern UI/UX
-- **Glassmorphism Design**: Modern, translucent UI elements
-- **Gradient Animations**: Dynamic color transitions with Framer Motion
-- **Responsive Layout**: Optimized for desktop, tablet, and mobile
-- **Dark Mode Support**: Built-in theme switching with next-themes
-- **Micro-interactions**: Smooth hover effects and transitions
-- **Toast Notifications**: User feedback with Sonner
-
-### Authentication & Security
-- **Clerk Integration**: Secure authentication with social login support
-- **Protected Routes**: Middleware-based route protection
-- **User Session Management**: Persistent sessions across devices
-- **API Security**: Authenticated API endpoints
-- **CORS Configuration**: Secure frontend-backend communication
-
-### Database Integration
-- **Supabase PostgreSQL**: Scalable relational database
-- **Real-time Capabilities**: Live data synchronization
-- **Row-Level Security**: User data isolation
-- **Efficient Queries**: Optimized data retrieval
-- **JSON Storage**: Flexible schema for portfolio data
+---
 
 ## 🔌 API Endpoints
 
-### Backend (FastAPI) - Port 8000
+### 🐍 FastAPI Microservice (`http://localhost:8000`)
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/file_upload` | POST | Upload resume PDF and create embeddings |
-| `/ai_agent` | POST | Query AI agent about resume |
-| `/delete_vectors` | POST | Delete all vectors from Pinecone |
+| Endpoint | Method | Request Body / Form | Description |
+|:---|:---:|:---|:---|
+| `/file_upload` | `POST` | `file`: PDF binary, `user_id`: string | Splits PDF into chunks, computes HuggingFace embeddings, and indexes into Pinecone under `user_id` namespace. |
+| `/ai_agent` | `POST` | `query`: string, `user_id`: string | Executes conversational agent with `interview_prep_tool` and web search fallback to answer user queries. |
 
-### Frontend (Next.js API Routes)
+---
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/ai/portfolio` | POST | Generate AI-refined portfolio |
-| `/api/portfolios/Delete` | DELETE | Delete portfolio |
-| `/api/resume` | POST | Process resume |
-| `/api/user` | GET/POST | User management |
+### ⚡ Next.js API Routes (`/api/*`)
+
+| Endpoint | Method | Purpose |
+|:---|:---:|:---|
+| `/api/ai/portfolio` | `POST` | Passes user profile info to Google Gemini for content enhancement and returns refined JSON. |
+| `/api/resume` | `POST` | Performs ATS resume analysis against job title, description, and required skill tags. |
+| `/api/voiceprep/getFeedback` | `POST` | Evaluates full Vapi voice interview transcript using Gemini to output multi-metric performance review. |
+| `/api/portfolios` | `POST` / `GET` | Creates new portfolio entries or fetches user portfolios. |
+| `/api/portfolios/Delete` | `DELETE` | Removes a portfolio record from Supabase. |
+| `/api/dashboard-stats` | `GET` | Returns aggregated metrics (total portfolios, total views, resume analyses). |
+| `/api/user` | `GET` | Fetches or lazily initializes user profile and subscription status. |
+| `/api/analyze-count` | `POST` | Increments user's resume analysis count. |
+| `/api/payment/create-order` | `POST` | Creates a Razorpay recurring subscription order for Pro plan. |
+| `/api/payment/verify` | `POST` | Verifies Razorpay payment signature and updates user status to `is_premium = true`. |
+| `/api/payment/cancel` | `POST` | Cancels an active Razorpay subscription. |
+
+---
+
+## 🎨 Portfolio Themes Showcase
+
+Resuma includes 6 customizable, production-ready portfolio templates:
+
+| Template Name | Style & Aesthetic | Best Suited For |
+|:---|:---|:---|
+| **EmeraldShine** | Vibrant emerald greens, gradient accents, modern glassmorphism | Full-Stack & Frontend Developers |
+| **MidnightBlue** | Deep dark theme, slate cards, high contrast typography | Backend Engineers & DevOps Specialists |
+| **NeonFusion** | Cyberpunk neon highlights, electric glow, bold cards | Creative Tech & Game Developers |
+| **OceanBreeze** | Minimalist blue & cyan gradients, airy spacing | Product Managers & UI/UX Designers |
+| **RoyalPurple** | Luxurious royal purple & indigo themes | Mobile Engineers & AI/ML Practitioners |
+| **SunsetGlow** | Warm sunset hues, amber tones, smooth hover states | Data Scientists & Tech Consultants |
+
+---
+
+## 🚢 Production Deployment
+
+### Frontend (Vercel)
+1. Push your code to a GitHub repository.
+2. Import the project in [Vercel](https://vercel.com/).
+3. Set the **Root Directory** to `resuma`.
+4. Add all environment variables from `.env.local` to Vercel's Environment Variables settings.
+5. Deploy!
+
+### Backend (Render / Railway / VPS)
+1. Create a Web Service on [Render](https://render.com/) or [Railway](https://railway.app/).
+2. Set the **Root Directory** to `backend`.
+3. Set the **Build Command** to `pip install -r requirements.txt`.
+4. Set the **Start Command** to:
+   ```bash
+   uvicorn main:app --host 0.0.0.0 --port $PORT
+   ```
+5. Add all backend environment variables (`GROQ_API_KEY`, `PINECONE_API_KEY`, `HF_TOKEN`).
+6. Update `NEXT_PUBLIC_BACKEND_URL` in your frontend environment with the live backend URL.
+
+---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions make the open-source community an inspiring place to learn and build:
 
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+---
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Distributed under the **MIT License**. See the [LICENSE](LICENSE) file for more information.
 
-Copyright (c) 2025 Vishankh
+```
+Copyright (c) 2025 Vishankh Bhardwaj
+```
+
+---
 
 ## 👨‍💻 Author
 
 **Vishankh Bhardwaj**
-
 - GitHub: [@VishankhBhardwaj](https://github.com/VishankhBhardwaj)
-
-## 🙏 Acknowledgments
-
-### Frontend
-- [Next.js](https://nextjs.org/) - The React Framework
-- [Clerk](https://clerk.com/) - Authentication and User Management
-- [Supabase](https://supabase.com/) - Backend as a Service
-- [Google Gemini AI](https://ai.google.dev/) - AI-Powered Portfolio Refinement
-- [Radix UI](https://www.radix-ui.com/) - Accessible UI Components
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-First CSS Framework
-- [Framer Motion](https://www.framer.com/motion/) - Animation Library
-
-### Backend
-- [FastAPI](https://fastapi.tiangolo.com/) - Modern Python Web Framework
-- [LangChain](https://python.langchain.com/) - LLM Application Framework
-- [Groq](https://groq.com/) - Fast LLM Inference
-- [Pinecone](https://www.pinecone.io/) - Vector Database
-- [HuggingFace](https://huggingface.co/) - Embeddings and Models
-
-## 📞 Support
-
-If you have any questions or need help, please:
-- Open an issue on GitHub
-- Contact the maintainer
-
-## 🌟 Show Your Support
-
-If you find this project helpful, please give it a ⭐️ on GitHub!
 
 ---
 
-**Transform your career story with AI-powered intelligence.** 🚀
+<div align="center">
+
+**Accelerate your career journey with the intelligence of Resuma.** 🚀
+
+*If you found this project helpful, please consider giving it a ⭐ on GitHub!*
+
+</div>
